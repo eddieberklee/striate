@@ -1,4 +1,4 @@
-# Writeaday2
+# Infinote
 
 ## Track your minute by minute.
 

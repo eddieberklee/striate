@@ -1,16 +1,16 @@
 {
   "project_info": {
     "project_number": "967564996807",
-    "firebase_url": "https://writeaday2.firebaseio.com",
-    "project_id": "writeaday2",
-    "storage_bucket": "writeaday2.appspot.com"
+    "firebase_url": "https://infinote.firebaseio.com",
+    "project_id": "infinote",
+    "storage_bucket": "infinote.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:967564996807:android:314dea7a4ee70bc5e84ee2",
         "android_client_info": {
-          "package_name": "com.compscieddy.writeaday2"
+          "package_name": "com.compscieddy.infinote"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "967564996807-trv89bo6erfcj3gil370j373qb3eqf9f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.compscieddy.writeaday2",
+            "package_name": "com.compscieddy.infinote",
             "certificate_hash": "64ad4538ed3b0cc69db3b6b9dec4792574a4e582"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "967564996807-mbhpg31i9c036h5dq280551tppkrq09p.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.compscieddy.writeaday2",
+            "package_name": "com.compscieddy.infinote",
             "certificate_hash": "0e993384b47e0a8a090b877dce61773837ad56c1"
           }
         },
@@ -34,7 +34,7 @@
           "client_id": "967564996807-rt9a5ti3n669t7vpvbvoabhv3m98rmsv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.compscieddy.writeaday2",
+            "package_name": "com.compscieddy.infinote",
             "certificate_hash": "e8e3c1e503191444bafc03bfccf90f0d580e1e88"
           }
         },
@@ -42,7 +42,7 @@
           "client_id": "967564996807-69m0mgtum8d1236cu7kh7tk5a0geuint.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.compscieddy.writeaday2",
+            "package_name": "com.compscieddy.infinote",
             "certificate_hash": "5dc023ae7b155bd72d21e954a6eb62b41fc836f8"
           }
         },
@@ -50,7 +50,7 @@
           "client_id": "967564996807-gpfebv4c74th83ofl1e9cv8b9ltfb9k2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.compscieddy.writeaday2",
+            "package_name": "com.compscieddy.infinote",
             "certificate_hash": "fb1af45bf357836efd6d6fb29b352869ddcc79c7"
           }
         },

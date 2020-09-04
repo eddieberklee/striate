@@ -7,7 +7,7 @@
 
   <string name="app_name">Capsule</string>
 
-  <!-- Displayed on the login screen. It's a greeting and an explanation of what I'm trying to accomplish with Writeaday2. -->
+  <!-- Displayed on the login screen. It's a greeting and an explanation of what I'm trying to accomplish with Infinote. -->
   <string name="authentication_description">
     "Journaling app for storing your thoughts in a clean and aesthetic capsule of memories."
   </string>
