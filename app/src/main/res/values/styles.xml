@@ -1,0 +1,306 @@
+<resources>
+
+  <style name="GodFragmentRootContainer">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:background">?attr/bgPrimary</item>
+    <item name="android:paddingTop">@dimen/god_fragment_padding_top</item>
+    <item name="android:paddingLeft">@dimen/god_fragment_padding_horizontal</item>
+    <item name="android:paddingRight">@dimen/god_fragment_padding_horizontal</item>
+  </style>
+
+  <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog">
+    <item name="android:colorAccent">@color/black</item>
+  </style>
+
+  <style name="SpaceWidth10dp">
+    <item name="android:layout_width">
+      10dp
+    </item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+
+  <style name="SpaceWidth15dp">
+    <item name="android:layout_width">
+      15dp
+    </item>
+    <item name="android:layout_height">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight10dp">
+    <item name="android:layout_height">
+      10dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight15dp">
+    <item name="android:layout_height">
+      15dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight40dp">
+    <item name="android:layout_height">
+      40dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight20dp">
+    <item name="android:layout_height">
+      20dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight30dp">
+    <item name="android:layout_height">
+      30dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight70dp">
+    <item name="android:layout_height">
+      70dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceHeight80dp">
+    <item name="android:layout_height">
+      80dp
+    </item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="SpaceWidthWeight1">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_weight">1</item>
+  </style>
+
+  <style name="SpaceHeightWeight1">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">0dp</item>
+    <item name="android:layout_weight">1</item>
+  </style>
+
+  <style name="DialogTitleText">
+    <item name="android:textSize">11sp</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:layout_marginStart">4dp</item>
+    <item name="android:layout_marginBottom">4dp</item>
+    <item name="fontface">jost_light</item>
+  </style>
+
+  <style name="FloatingFullscreenDialogTheme">
+    <item name="android:windowIsFloating">true</item>
+    <item name="android:windowBackground">@color/transparent</item>
+    <item name="android:backgroundDimEnabled">false</item>
+  </style>
+
+  <style name="StandardDialogContainer_useWithCarbonView">
+    <item name="android:background">@color/white</item>
+    <item name="android:padding">@dimen/spacing_medium</item>
+    <item name="android:translationY">-30dp</item>
+    <item name="carbon_cornerRadius">@dimen/spacing_small</item>
+  </style>
+
+  <style name="MediumButton">
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:paddingTop">@dimen/spacing_large</item>
+    <item name="android:paddingBottom">@dimen/spacing_large</item>
+    <item name="android:paddingLeft">@dimen/spacing_xlarge</item>
+    <item name="android:paddingRight">@dimen/spacing_xlarge</item>
+    <item name="android:textSize">18sp</item>
+    <item name="fontface">manrope_semi_bold</item>
+  </style>
+
+  <!-- Settings -->
+  <style name="SettingsLargeButtonContainer">
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="android:paddingLeft">20dp</item>
+    <item name="android:paddingRight">20dp</item>
+    <item name="carbon_cornerRadius">@dimen/settings_button_radius</item>
+  </style>
+
+  <style name="SettingsSmallButtonContainer">
+    <item name="android:background">@color/black</item>
+    <item name="carbon_cornerRadius">5dp</item>
+    <item name="android:paddingTop">8dp</item>
+    <item name="android:paddingBottom">8dp</item>
+    <item name="android:paddingLeft">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+  </style>
+
+  <style name="SettingsLargeButtonText">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">18sp</item>
+    <item name="fontface">manrope_semi_bold</item>
+  </style>
+
+  <style name="SettingsSmallButtonText">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">@color/white</item>
+    <item name="android:textSize">15sp</item>
+    <item name="fontface">manrope_semi_bold</item>
+  </style>
+
+  <style name="SettingsReportReviewIcon">
+    <item name="android:layout_width">18dp</item>
+    <item name="android:layout_height">18dp</item>
+    <item name="android:layout_marginLeft">-4dp</item>
+    <item name="android:layout_marginRight">10dp</item>
+    <item name="customColor">@color/white</item>
+  </style>
+
+  <style name="NewHabitTitleText">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center_horizontal</item>
+    <item name="android:textSize">21sp</item>
+    <item name="android:textColor">@color/wtb_70</item>
+    <item name="android:letterSpacing">-0.01</item>
+    <item name="fontface">jost_bold</item>
+  </style>
+
+  <!-- Menu Floating Fragment -->
+  <style name="MenuFragmentRowContainer">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">@dimen/normal_menu_fragment_row_height</item>
+    <item name="android:orientation">horizontal</item>
+    <item name="android:paddingLeft">12dp</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:clipChildren">false</item>
+    <item name="android:clipToPadding">false</item>
+  </style>
+
+  <style name="MenuFragmentRowText">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">@color/black</item>
+    <item name="android:textSize">16sp</item>
+    <item name="fontface">manrope_bold</item>
+  </style>
+
+  <style name="MenuFragmentRowDivider">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">1dp</item>
+    <item name="android:background">@color/menu_fragment_divider_line</item>
+  </style>
+
+  <!-- Notification -->
+
+  <!-- Used under the login button to explain privacy concerns. -->
+  <style name="AuthenticationLoginSmallText">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:textSize">13sp</item>
+    <item name="android:textColor">@color/black</item>
+  </style>
+
+  <style name="NavigationBarItemContainer">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:layout_gravity">center_vertical</item>
+    <item name="android:orientation">vertical</item>
+    <item name="android:gravity">center_horizontal</item>
+  </style>
+
+  <style name="NavigationBarItemIcon">
+    <item name="android:layout_width">22dp</item>
+    <item name="android:layout_height">22dp</item>
+    <item name="customColor">@color/black</item>
+  </style>
+
+  <style name="NavigationBarItemTitle">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:textColor">@color/black</item>
+    <item name="fontface">jost_medium</item>
+  </style>
+
+  <style name="EntryActionButton">
+    <item name="android:paddingTop">9dp</item>
+    <item name="android:paddingLeft">9dp</item>
+    <item name="android:paddingRight">9dp</item>
+    <item name="android:paddingBottom">6dp</item>
+  </style>
+
+  <style name="PhotoButtonContainer">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:paddingTop">4dp</item>
+    <item name="android:paddingBottom">4dp</item>
+    <item name="android:paddingLeft">6dp</item>
+    <item name="android:paddingRight">6dp</item>
+    <item name="android:gravity">center_vertical</item>
+    <item name="android:orientation">horizontal</item>
+  </style>
+
+  <style name="PhotoButtonTitle">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">@color/white_t50</item>
+    <item name="android:textSize">13sp</item>
+    <item name="android:translationX">2dp</item>
+    <item name="android:translationY">2dp</item>
+    <item name="fontface">jost_regular</item>
+  </style>
+
+  <style name="PhotoButtonIcon">
+    <item name="android:layout_width">38dp</item>
+    <item name="android:layout_height">38dp</item>
+    <item name="android:padding">8dp</item>
+    <item name="customColor">@color/white</item>
+  </style>
+
+  <style name="NewEntryButton">
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:orientation">horizontal</item>
+    <item name="android:paddingTop">13dp</item>
+    <item name="android:paddingBottom">13dp</item>
+    <item name="android:clipChildren">false</item>
+    <item name="android:clipToPadding">false</item>
+  </style>
+
+  <style name="NewEntryButtonIcon">
+    <item name="android:layout_gravity">center</item>
+    <item name="customColor">?attr/fgPrimary</item>
+  </style>
+
+  <style name="NavDaySparklinesContainer">
+    <item name="android:layout_width">@dimen/nav_day_width</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:paddingLeft">@dimen/sparkline_view_padding_sides</item>
+    <item name="android:paddingRight">@dimen/sparkline_view_padding_sides</item>
+    <item name="android:layout_marginRight">@dimen/nav_day_margin_right</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="DayOfWeekContainer">
+    <item name="android:layout_width">@dimen/nav_day_width</item>
+    <item name="android:layout_height">@dimen/nav_day_width</item>
+    <item name="android:layout_marginRight">@dimen/nav_day_margin_right</item>
+  </style>
+
+  <style name="DayOfWeekInitialText">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_gravity">center</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textColor">?attr/fgPrimary</item>
+    <item name="fontface">rubik_regular</item>
+  </style>
+</resources>

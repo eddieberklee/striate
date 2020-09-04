@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<carbon.widget.FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="0dp"
+  android:layout_height="0dp"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:orientation="vertical"
+  app:carbon_cornerRadius="@dimen/entry_corner_radius"
+  >
+  <!-- layout params are set dynamically -->
+
+  <!-- Dummy to prevent entry autocomplete text view from gaining focus (used to happen on view page swipes) -->
+  <View
+    android:layout_width="1dp"
+    android:layout_height="1dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    />
+
+  <carbon.widget.FrameLayout
+    android:id="@+id/entry_autocomplete_view_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    tools:ignore="RtlHardcoded"
+    >
+    <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
+      android:id="@+id/entry_autocomplete_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@null"
+      android:hint="@string/entry_hint_text"
+      android:imeOptions="actionDone"
+      android:letterSpacing="-0.03"
+      android:lineSpacingMultiplier="0.85"
+      android:paddingLeft="12dp"
+      android:paddingTop="6dp"
+      android:paddingRight="12dp"
+      android:paddingBottom="6dp"
+      android:textColor="?attr/fgPrimary"
+      android:textSize="18sp"
+      app:fontface="jost_regular"
+      tools:ignore="InefficientWeight"
+      />
+  </carbon.widget.FrameLayout>
+
+  <ImageView
+    android:id="@+id/entry_photo_image_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scaleType="centerCrop"
+    />
+
+  <carbon.widget.FrameLayout
+    android:id="@+id/entry_photo_caption_text_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@drawable/black_curtain_bottom_to_top"
+    android:paddingLeft="6dp"
+    android:paddingTop="6dp"
+    android:paddingRight="6dp"
+    android:paddingBottom="4dp"
+    >
+    <com.compscieddy.eddie_utils.eui.FontTextView
+      android:id="@+id/entry_photo_caption_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:textColor="@color/white"
+      android:textSize="11sp"
+      app:fontface="jost_light"
+      />
+  </carbon.widget.FrameLayout>
+
+  <!-- Entry Action Icons -->
+  <LinearLayout
+    android:id="@+id/entry_action_icons_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="right"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="4dp"
+    android:paddingRight="3dp"
+    android:translationX="-1dp"
+    android:translationY="-2dp"
+    android:visibility="gone"
+    tools:ignore="RtlHardcoded"
+    >
+
+    <com.compscieddy.eddie_utils.eui.ColorImageView
+      android:id="@+id/entry_action_mood_button"
+      style="@style/EntryActionButton"
+      android:layout_width="34dp"
+      android:layout_height="34dp"
+      android:src="@drawable/ic_face"
+      android:translationY="1dp"
+      app:customColor="@color/white_t85"
+      />
+
+    <com.compscieddy.eddie_utils.eui.ColorImageView
+      android:id="@+id/entry_action_journal_prompts_button"
+      style="@style/EntryActionButton"
+      android:layout_width="38dp"
+      android:layout_height="38dp"
+      android:padding="10dp"
+      android:src="@drawable/ic_design_tool_quill"
+      app:customColor="@color/white_t85"
+      />
+
+    <com.compscieddy.eddie_utils.eui.ColorImageView
+      android:id="@+id/entry_action_hashtags_button"
+      style="@style/EntryActionButton"
+      android:layout_width="38dp"
+      android:layout_height="38dp"
+      android:padding="10dp"
+      android:src="@drawable/ic_hash"
+      app:customColor="@color/white_t85"
+      />
+
+    <com.compscieddy.eddie_utils.eui.ColorImageView
+      android:id="@+id/entry_delete_button"
+      style="@style/EntryActionButton"
+      android:layout_width="38dp"
+      android:layout_height="38dp"
+      android:src="@drawable/ic_delete"
+      app:customColor="@color/white_t85"
+      />
+  </LinearLayout>
+
+</carbon.widget.FrameLayout>

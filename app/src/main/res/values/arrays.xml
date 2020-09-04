@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+  <array name="day_of_week_colors">
+    <item>@color/monday_red</item>
+    <item>@color/tuesday_orange</item>
+    <item>@color/wednesday_yellow</item>
+    <item>@color/thursday_green</item>
+    <item>@color/friday_blue</item>
+    <item>@color/saturday_darkblue</item>
+    <item>@color/sunday_purple</item>
+    <item>@color/monday_red</item>
+  </array>
+
+  <array name="day_of_week_initials">
+    <item>@string/monday_initial</item>
+    <item>@string/tuesday_initial</item>
+    <item>@string/wednesday_initial</item>
+    <item>@string/thursday_initial</item>
+    <item>@string/friday_initial</item>
+    <item>@string/saturday_initial</item>
+    <item>@string/sunday_initial</item>
+  </array>
+
+</resources>

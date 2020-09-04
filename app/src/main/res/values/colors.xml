@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="colorPrimary">@color/black</color>
+  <color name="colorPrimaryDark">@color/black</color>
+  <color name="colorAccent">@color/white</color>
+
+  <!-- Standard Colors -->
+  <color name="standard_faded_text_color">@color/black_t60</color>
+
+  <color name="dialog_black_background">@color/black_t70</color>
+
+  <color name="writeaday2_red">#FB9595</color>
+  <color name="writeaday2_orange">#F8C196</color>
+  <color name="writeaday2_yellow">#E8D09C</color>
+  <color name="writeaday2_green">#B2DFA3</color>
+  <color name="writeaday2_teal">#A7DEC7</color>
+  <color name="writeaday2_blue">#7CC0EA</color>
+  <color name="writeaday2_purple">#B2A0D7</color>
+  <color name="writeaday2_pink">#E7BCDF</color>
+  <color name="writeaday2_light_grey">#A9B6C6</color>
+  <color name="writeaday2_dark_grey">#758696</color>
+
+  <color name="call_to_action_blue">#229BFF</color>
+
+  <!-- Menu Floating Fragment -->
+  <color name="menu_fragment_divider_line">#F8F8F8</color>
+  <color name="menu_fragment_delete_color">#8C3D3D</color>
+
+  <!--five minute journal-->
+
+  <!-- border theme -->
+
+  <!-- For the Settings Switches -->
+
+  <color name="divide_red">@color/pastel_red</color>
+  <color name="divide_orange">@color/pastel_orange</color>
+  <color name="divide_yellow">@color/pastel_yellow</color>
+  <color name="divide_green">@color/pastel_green</color>
+  <color name="divide_blue">@color/pastel_blue</color>
+  <color name="divide_darkblue">@color/pastel_darkblue</color>
+  <color name="divide_purple">@color/pastel_purple</color>
+
+  <color name="monday_red">@color/divide_red</color>
+  <color name="tuesday_orange">@color/divide_orange</color>
+  <color name="wednesday_yellow">@color/divide_yellow</color>
+  <color name="thursday_green">@color/divide_green</color>
+  <color name="friday_blue">@color/divide_blue</color>
+  <color name="saturday_darkblue">@color/divide_darkblue</color>
+  <color name="sunday_purple">@color/divide_purple</color>
+
+  <!-- ++++++++++++++++++++++++++++=   Commonly Used Colors Template   ++++++++++++++++++++++++++++ -->
+
+  <color name="white">#FFFFFFFE
+  </color><!-- Perfect FFF for white doesn't work with ColorImageView...off by 1 error somewhere? -->
+  <color name="black">#FF000000</color>
+  <color name="transparent">#00000000</color>
+
+  <color name="pastel_red">#F77272</color>
+  <color name="pastel_orange">#F2B56C</color>
+  <color name="pastel_yellow">#E1D860</color>
+  <color name="pastel_green">#4ADEA6</color>
+  <color name="pastel_blue">#58C2E2</color>
+  <color name="pastel_darkblue">#6D79DB</color>
+  <color name="pastel_purple">#D074C7</color>
+  <!-- The old OG colors that were a little not legible enough -->
+  <!--<color name="pastel_red">#FF9C9C</color>-->
+  <!--<color name="pastel_orange">#F9CE9B</color>-->
+  <!--<color name="pastel_yellow">#F7E89C</color>-->
+  <!--<color name="pastel_green">#98EACB</color>-->
+  <!--<color name="pastel_blue">#7FCBE2</color>-->
+  <!--<color name="pastel_darkblue">#949CDC</color>-->
+  <!--<color name="pastel_purple">#C898C3</color>-->
+
+  <!-- flat ui colors-->
+
+  <color name="black_t05">#0D000000</color>
+  <color name="black_t10">#1A000000</color>
+  <color name="black_t15">#26000000</color>
+  <color name="black_t20">#33000000</color>
+  <color name="black_t30">#4D000000</color>
+  <color name="black_t40">#66000000</color>
+  <color name="black_t50">#80000000</color>
+  <color name="black_t60">#99000000</color>
+  <color name="black_t70">#B3000000</color>
+  <color name="black_t80">#CC000000</color>
+  <color name="black_t85">#D9000000</color>
+  <color name="black_t90">#E6000000</color>
+
+  <color name="white_t05">#0DFFFFFF</color>
+  <color name="white_t10">#1AFFFFFF</color>
+  <color name="white_t15">#26FFFFFF</color>
+  <color name="white_t20">#33FFFFFF</color>
+  <color name="white_t30">#4DFFFFFF</color>
+  <color name="white_t40">#66FFFFFF</color>
+  <color name="white_t50">#80FFFFFF</color>
+  <color name="white_t60">#99FFFFFF</color>
+  <color name="white_t70">#B3FFFFFF</color>
+  <color name="white_t80">#CCFFFFFF</color>
+  <color name="white_t85">#D9FFFFFF</color>
+  <color name="white_t90">#E6FFFFFF</color>
+
+  <!-- 1 through 14 -->
+
+  <color name="wtb_05">#F2F2F2</color>
+  <color name="wtb_10">#E6E6E6</color>
+  <color name="wtb_15">#D9D9D9</color>
+  <color name="wtb_20">#CCCCCC</color>
+  <color name="wtb_30">#B3B3B3</color>
+  <color name="wtb_40">#999999</color>
+  <color name="wtb_50">#808080</color>
+  <color name="wtb_60">#666666</color>
+  <color name="wtb_70">#4D4D4D</color>
+  <color name="wtb_80">#333333</color>
+  <color name="wtb_85">#262626</color>
+  <color name="wtb_90">#1A1A1A</color>
+  <color name="wtb_95">#0D0D0D</color>
+
+</resources>

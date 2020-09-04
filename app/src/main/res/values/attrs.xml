@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="fgPrimary" format="color"/>
+    <attr name="bgPrimary" format="color"/>
+
+    <attr name="fgPrimaryT05" format="color"/>
+    <attr name="fgPrimaryT10" format="color"/>
+    <attr name="fgPrimaryT15" format="color"/>
+    <attr name="fgPrimaryT20" format="color"/>
+    <attr name="fgPrimaryT30" format="color"/>
+    <attr name="fgPrimaryT40" format="color"/>
+    <attr name="fgPrimaryT50" format="color"/>
+    <attr name="fgPrimaryT60" format="color"/>
+    <attr name="fgPrimaryT70" format="color"/>
+    <attr name="fgPrimaryT80" format="color"/>
+    <attr name="fgPrimaryT90" format="color"/>
+
+    <attr name="fgPrimary05" format="color"/>
+    <attr name="fgPrimary10" format="color"/>
+    <attr name="fgPrimary15" format="color"/>
+    <attr name="fgPrimary20" format="color"/>
+    <attr name="fgPrimary30" format="color"/>
+    <attr name="fgPrimary40" format="color"/>
+    <attr name="fgPrimary50" format="color"/>
+    <attr name="fgPrimary60" format="color"/>
+    <attr name="fgPrimary70" format="color"/>
+    <attr name="fgPrimary80" format="color"/>
+    <attr name="fgPrimary90" format="color"/>
+    <attr name="fgPrimary95" format="color"/>
+
+    <attr name="bgPrimaryT05" format="color"/>
+    <attr name="bgPrimaryT10" format="color"/>
+    <attr name="bgPrimaryT15" format="color"/>
+    <attr name="bgPrimaryT20" format="color"/>
+    <attr name="bgPrimaryT30" format="color"/>
+    <attr name="bgPrimaryT40" format="color"/>
+    <attr name="bgPrimaryT50" format="color"/>
+    <attr name="bgPrimaryT60" format="color"/>
+    <attr name="bgPrimaryT70" format="color"/>
+    <attr name="bgPrimaryT80" format="color"/>
+    <attr name="bgPrimaryT90" format="color"/>
+
+    <attr name="bgPrimary05" format="color"/>
+    <attr name="bgPrimary10" format="color"/>
+    <attr name="bgPrimary15" format="color"/>
+    <attr name="bgPrimary20" format="color"/>
+    <attr name="bgPrimary30" format="color"/>
+    <attr name="bgPrimary40" format="color"/>
+    <attr name="bgPrimary50" format="color"/>
+    <attr name="bgPrimary60" format="color"/>
+    <attr name="bgPrimary70" format="color"/>
+    <attr name="bgPrimary80" format="color"/>
+    <attr name="bgPrimary90" format="color"/>
+    <attr name="bgPrimary95" format="color"/>
+
+</resources>

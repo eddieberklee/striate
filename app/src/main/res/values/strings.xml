@@ -1,0 +1,139 @@
+<resources>
+
+  <!-- Dev Keys -->
+  <string name="firebase_web_client_id">
+    967564996807-ahtbmpsu65av8ihtct66k1446ugmv0ss.apps.googleusercontent.com
+  </string>
+
+  <string name="app_name">Capsule</string>
+
+  <!-- Displayed on the login screen. It's a greeting and an explanation of what I'm trying to accomplish with Writeaday2. -->
+  <string name="authentication_description">
+    "Journaling app for storing your thoughts in a clean and aesthetic capsule of memories."
+  </string>
+
+  <!-- Letting users know they can't put an empty habit name when creating a new habit -->
+
+  <!-- Short title for the dialog where you create a new habit -->
+  <string name="new_habit_title">New Habit</string>
+  <string name="habit_name_title">Name</string>
+  <string name="new_reminder_set_button">Set</string>
+
+  <!-- Short title for that section where I suggest habits for users in the new habit dialog -->
+
+  <!-- Used in a dialog to confirm something a user did -->
+  <string name="confirmation_dialog_description">Are you sure you want to dismiss?</string>
+  <string name="confirmation_dialog_yes_button">Yes</string>
+  <string name="confirmation_dialog_cancel_button">Cancel</string>
+
+  <!-- Initials of the day of the week. Should be a single letter -->
+  <string name="sunday_initial">S</string>
+  <string name="saturday_initial">S</string>
+  <string name="friday_initial">F</string>
+  <string name="thursday_initial">T</string>
+  <string name="wednesday_initial">W</string>
+  <string name="tuesday_initial">T</string>
+  <string name="monday_initial">M</string>
+
+  <string name="new_day_event_hint">What have you been doing…</string>
+  <string name="settings_give_feedback">Give Feedback…</string>
+  <string name="settings_report_problem">Report a Problem</string>
+  <string name="settings_review_app">Review the App</string>
+  <string name="settings_log_out">Log Out</string>
+  <string name="authentication_loading_text">Loading…</string>
+
+  <!-- Suggestion Categories -->
+  <string name="category_mental_health">Mental Health</string>
+  <string name="category_physical_health">Physical Health</string>
+  <string name="category_drawing">Drawing</string>
+  <string name="category_learning">Learning</string>
+
+  <!-- Mental Health -->
+  <string name="mental_health_meditate">Meditate</string>
+  <string name="mental_health_drink_tea">Drink Tea</string>
+  <string name="mental_health_yoga">Yoga</string>
+  <string name="mental_health_podcast_with_tea">Podcast with Tea</string>
+  <string name="mental_health_message_friends_and_family">Message Friends and Family</string>
+  <!-- Physical Health -->
+  <string name="physical_health_take_a_walk">Take A Walk</string>
+  <string name="physical_health_workout">Workout</string>
+  <string name="physical_health_cold_shower">Cold Shower</string>
+  <string name="physical_health_morning_jog">Morning Jog</string>
+  <string name="physical_health_pushups">Pushups</string>
+  <string name="physical_health_squats">Squats</string>
+  <!-- Drawing -->
+  <string name="drawing_daily_drawing">Daily Drawing</string>
+  <string name="drawing_5_minute_sketch">5 Minute Sketch</string>
+  <string name="drawing_drawing_lesson_on_youtube">Drawing Lesson on YouTube</string>
+  <string name="drawing_morning_sketch">Morning Sketch</string>
+  <string name="drawing_daily_doodle">Daily Doodle</string>
+  <!-- Learning -->
+  <string name="learning_youtube">Learn from YouTube</string>
+  <string name="learning_blog_post">Read Blog Post</string>
+  <string name="learning_listen_to_podcast">Listen to Podcast</string>
+  <string name="learning_ted_video">TED Video</string>
+  <string name="learning_journal">Journal</string>
+  <string name="learning_research_on_wikipedia">Research on Wikipedia</string>
+
+  <string name="settings_placeholder_message">Settings for customizing the app will be added here! Coming in July 2020.</string>
+  <string name="settings_title">Settings</string>
+
+  <string-array name="if_you_want_to_answers">
+    <item>Clear your mind by writing things down</item>
+    <item>Reflect on your day in peace</item>
+    <item>Notice patterns in your thinking</item>
+    <item>Be reminded of happy times in your past</item>
+    <item>Mitigate your anxiety through writing</item>
+    <item>Discover yourself through writing</item>
+    <item>Guide your thoughts through helpful writing prompts</item>
+  </string-array>
+
+  <string name="settings_navbar_title">Settings</string>
+  <string name="circle_navbar_title">Home</string>
+  <string name="photos_navbar_title">Photos</string>
+
+  <string name="onboarding_day_1_title">Welcome to Capsule</string>
+  <string name="onboarding_day_2_title">Day 2 of Capsule</string>
+  <string name="onboarding_day_3_title">Day 3 of Capsule</string>
+  <string name="onboarding_day_4_title">Day 4 of Capsule</string>
+  <string name="onboarding_day_5_title">Day 5 of Capsule</string>
+
+  <string name="onboarding_day_1_description">
+    "The first day of the rest of your life. Capsule is how you get thoughts from your head onto paper..
+    \n-Ed"
+  </string>
+  <string name="onboarding_day_2_description">
+    "You made it to Day 2. I'm glad you're back so that we can discover the long-term benefits of journaling together.
+    \n-Ed"
+  </string>
+  <string name="onboarding_day_3_description">
+    "This is where most people lack the grit to continue. Continue to clear the mind by making time to write down your thoughts.
+    \n-Ed"
+  </string>
+  <string name="onboarding_day_4_description">
+    "You've made it to Day 4. Take a second to breath, to smile, and look back on your thoughts and experiences from this week.
+    \n-Ed"
+  </string>
+  <string name="onboarding_day_5_description">
+    "Thanks for making it to Day 5. I want to make a better tool for you. How can Capsule better serve you? Email me at capsulejournaling@gmail.com
+    \n-Ed"
+  </string>
+
+  <string name="instructions_long_press_to_delete">Long-press to delete.</string>
+  <string name="entry_hint_text">Enter text...</string>
+  <string name="photo_viewer_share_button">Share</string>
+  <string name="photo_viewer_save_button">Save</string>
+  <string name="photo_viewer_delete_button">Delete</string>
+  <string name="google_login_description">Sync to the cloud. Backup your writing and photos so you never need to worry about losing your entries.</string>
+  <string name="google_login_description_what_is_saved">Only your email, name, and profile picture is shared. Nothing else.</string>
+
+  <string name="photo_loading_hint_1">Tap on photo to view it full-screen. Add a caption, share the photo, and more.</string>
+  <string name="photo_loading_hint_2">Adding a hashtag to the photo caption enables related photos to be surfaced over time.</string>
+  <string name="photo_loading_hint_3">Caption your photo with text in the photo viewer.</string>
+  <string name="photo_loading_tip_title">Tips:</string>
+  <string name="photo_caption_hint_text">+ Add Caption</string>
+  <string name="num_photos_found_for_hashtag">%d photos found</string>
+  <string name="entry_type_photo">photo</string>
+  <string name="entry_type_text">text</string>
+
+</resources>

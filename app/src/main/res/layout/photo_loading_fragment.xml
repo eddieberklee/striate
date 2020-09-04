@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+
+  <View
+    android:id="@+id/black_curtain_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_t70"
+    />
+
+  <com.github.ybq.android.spinkit.SpinKitView
+    android:id="@+id/loading_spinner"
+    style="@style/SpinKitView.Large.Pulse"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    app:SpinKit_Color="?attr/fgPrimary"
+    />
+
+  <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/loading_spinner"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical"
+    >
+    <com.compscieddy.eddie_utils.eui.FontTextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginBottom="5dp"
+      android:text="@string/photo_loading_tip_title"
+      android:textAllCaps="true"
+      android:textColor="@color/white"
+      android:textSize="14sp"
+      app:fontface="jost_light"
+      />
+    <com.compscieddy.eddie_utils.eui.FontTextView
+      android:id="@+id/photo_loading_hint_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="30dp"
+      android:layout_marginRight="30dp"
+      android:gravity="center_horizontal"
+      android:textColor="@color/white"
+      android:textSize="16sp"
+      app:fontface="jost_medium"
+      />
+  </LinearLayout>
+
+  <carbon.widget.FrameLayout
+    android:id="@+id/main_dialog_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    >
+  </carbon.widget.FrameLayout>
+
+</RelativeLayout>

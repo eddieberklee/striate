@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  >
+
+  <View
+    android:id="@+id/black_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_t85"
+    />
+
+  <!-- Horizontal Container -->
+  <LinearLayout
+    android:id="@+id/main_dialog_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="horizontal"
+    >
+
+    <Space style="@style/SpaceWidthWeight1" />
+
+    <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
+      android:id="@+id/new_day_edit_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@null"
+      android:padding="40dp"
+      android:hint="@string/new_day_event_hint"
+      android:inputType="textMultiLine"
+      android:imeOptions="actionDone"
+      android:textSize="22sp"
+      android:textColorHint="@color/white_t50"
+      android:textColor="@color/white"
+      app:fontface="manrope_medium"
+      />
+
+    <Space style="@style/SpaceWidthWeight1" />
+  </LinearLayout>
+
+
+</FrameLayout>

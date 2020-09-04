@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  style="@style/GodFragmentRootContainer"
+  android:orientation="vertical"
+  >
+
+  <com.compscieddy.eddie_utils.eui.FontTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:text="@string/settings_title"
+    android:textColor="@color/black"
+    android:textSize="32sp"
+    app:fontface="jost_semi_bold"
+    />
+
+  <Space style="@style/SpaceHeight20dp" />
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <ImageView
+      android:id="@+id/user_profile_picture"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      />
+    <Space style="@style/SpaceWidth15dp" />
+    <com.compscieddy.eddie_utils.eui.FontTextView
+      android:id="@+id/user_name"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
+      android:textColor="@color/black"
+      android:textSize="20sp"
+      app:fontface="jost_semi_bold"
+      />
+  </LinearLayout>
+
+  <Space style="@style/SpaceHeight15dp" />
+
+  <carbon.widget.FrameLayout
+    android:id="@+id/give_feedback_rounded_fake_composer"
+    style="@style/SettingsSmallButtonContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/give_feedback_stroked_background"
+    >
+
+    <com.compscieddy.eddie_utils.eui.FontTextView
+      style="@style/SettingsSmallButtonText"
+      android:text="@string/settings_give_feedback"
+      android:textColor="@color/black_t70"
+      />
+  </carbon.widget.FrameLayout>
+
+  <Space style="@style/SpaceHeight20dp" />
+
+  <carbon.widget.LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <carbon.widget.LinearLayout
+      android:id="@+id/report_a_problem"
+      style="@style/SettingsSmallButtonContainer"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="horizontal"
+      >
+      <com.compscieddy.eddie_utils.eui.ColorImageView
+        style="@style/SettingsReportReviewIcon"
+        android:src="@drawable/ic_megaphone"
+        />
+      <com.compscieddy.eddie_utils.eui.FontTextView
+        style="@style/SettingsSmallButtonText"
+        android:layout_gravity="center"
+        android:text="@string/settings_report_problem"
+        />
+    </carbon.widget.LinearLayout>
+
+    <Space style="@style/SpaceWidth10dp" />
+
+    <carbon.widget.LinearLayout
+      android:id="@+id/review_the_app"
+      style="@style/SettingsSmallButtonContainer"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="1"
+      android:orientation="horizontal"
+      >
+      <com.compscieddy.eddie_utils.eui.ColorImageView
+        style="@style/SettingsReportReviewIcon"
+        android:scaleX="1.6"
+        android:scaleY="1.6"
+        android:src="@drawable/ic_rating_star"
+        />
+      <com.compscieddy.eddie_utils.eui.FontTextView
+        style="@style/SettingsSmallButtonText"
+        android:layout_gravity="center"
+        android:text="@string/settings_review_app"
+        />
+    </carbon.widget.LinearLayout>
+  </carbon.widget.LinearLayout>
+
+  <Space style="@style/SpaceHeightWeight1" />
+
+  <com.compscieddy.eddie_utils.eui.FontTextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:gravity="center"
+    android:text="@string/settings_placeholder_message"
+    android:textColor="@color/black"
+    android:textSize="15sp"
+    app:fontface="jost_medium"
+    />
+
+  <Space style="@style/SpaceHeightWeight1" />
+
+  <carbon.widget.FrameLayout
+    android:id="@+id/logout_button"
+    style="@style/SettingsLargeButtonContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    >
+
+    <com.compscieddy.eddie_utils.eui.FontTextView
+      style="@style/SettingsLargeButtonText"
+      android:layout_gravity="center"
+      android:text="@string/settings_log_out"
+      android:textColor="@color/white"
+      />
+  </carbon.widget.FrameLayout>
+
+  <Space style="@style/SpaceHeight80dp" />
+
+</LinearLayout>

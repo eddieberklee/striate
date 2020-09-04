@@ -1,0 +1,108 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
+
+android {
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "com.compscieddy.writeaday2"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 23
+        versionName "0.9"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    viewBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation 'com.google.android.material:material:1.2.0'
+
+    implementation 'the.bot.box:shorty:1.0.1'
+
+    // ButterKnife
+    def butterknife_version = '10.2.1'
+    //noinspection AnnotationProcessorOnCompilePath
+    implementation "com.jakewharton:butterknife:${butterknife_version}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknife_version}"
+
+    // Eddie Utils
+    implementation('com.compscieddy:eddie-utils:1.2.19') {
+        exclude group: 'com.android.support'
+    }
+
+    // Needed for max day of month calculation
+    implementation 'net.danlew:android.joda:2.9.9'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.0'
+
+    implementation 'com.google.firebase:firebase-analytics:17.5.0'
+    // Recommended is to use Firebase Analytics instead of Firebase (Remote) Config
+    implementation 'com.google.firebase:firebase-config:19.2.0'
+    implementation 'com.google.firebase:firebase-auth:19.3.2'
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-firestore:21.5.0'
+    implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
+    implementation 'com.google.firebase:firebase-functions:19.0.2'
+    implementation 'com.google.firebase:firebase-storage:19.1.1'
+
+    // FirebaseUI for Cloud Firestore
+    implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
+
+    // Emoji is used inside of the Font Views
+    implementation 'com.vanniktech:emoji-ios:0.5.1'
+
+    // Carbon (https://github.com/ZieIony/Carbon/wiki/Installation)
+    api 'tk.zielony:carbon:0.16.0.1'
+
+    // GCM (also needed for Google Login)
+    implementation 'com.google.android.gms:play-services-gcm:17.0.0'
+    implementation 'com.google.android.gms:play-services-base:17.3.0'
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+
+    implementation 'com.instabug.library:instabug:9.1.1'
+
+    // Loading Indicators (https://github.com/ybq/Android-SpinKit)
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    implementation 'com.amplitude:android-sdk:2.23.2'
+
+    implementation 'nl.dionsegijn:konfetti:1.2.0'
+    implementation 'org.greenrobot:eventbus:3.2.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+
+    implementation 'com.smartlook.recording:app:1.4.2-native'
+
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+
+    // Photo Picker
+    implementation 'com.github.esafirm.android-image-picker:imagepicker:2.3.2'
+    // for experimental rx picker
+    implementation 'com.github.esafirm.android-image-picker:rximagepicker:2.3.2'
+    // If you have a problem with Glide, please use the same Glide version or simply open an issue
+    implementation 'com.github.bumptech.glide:glide:4.5.0'
+
+    // Facebook Ads
+    implementation 'com.facebook.android:audience-network-sdk:5.11.0'
+}
