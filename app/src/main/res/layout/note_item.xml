@@ -53,8 +53,9 @@
           />
         <View
           android:id="@+id/line_indicator"
-          android:layout_width="8dp"
+          android:layout_width="2dp"
           android:layout_height="match_parent"
+          android:paddingLeft="15dp"
           />
       </carbon.widget.FrameLayout>
       <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView

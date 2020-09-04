@@ -3,6 +3,7 @@ package com.compscieddy.striate.note;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -131,5 +132,12 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
     heightAnimator.setDuration(500);
     heightAnimator.start();
+  }
+
+  public void setHighlight() {
+    binding.lineIndicator.setVisibility(View.VISIBLE);
+    binding.dotControl.setVisibility(View.GONE);
+
+    binding.lineIndicator.setBackgroundColor(Color.RED);
   }
 }

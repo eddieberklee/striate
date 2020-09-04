@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -22,6 +23,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 
 public class InfinoteGodFragment extends Fragment {
 
@@ -97,6 +99,49 @@ public class InfinoteGodFragment extends Fragment {
         RecyclerView.VERTICAL,
         true));
     binding.notesRecyclerView.setAdapter(mFirebaseAdapter);
+
+    binding.notesRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+      @Override
+      public boolean onTouch(View v, MotionEvent event) {
+        Timber.d("notes recycler view onTouch: " + getActionString(event));
+
+        @Nullable View noteView = getNoteViewForY(event.getY());
+        if (noteView != null) {
+          NoteHolder noteHolder = getNoteHolderForNoteView(noteView);
+          noteHolder.setHighlight();
+        }
+
+        return false;
+      }
+    });
+  }
+
+  private NoteHolder getNoteHolderForNoteView(View noteView) {
+    return (NoteHolder) binding.notesRecyclerView.findContainingViewHolder(noteView);
+  }
+
+  private View getNoteViewForY(float y) {
+    return binding.notesRecyclerView.findChildViewUnder(0, y);
+  }
+
+  // todo: move to etils
+  private String getActionString(MotionEvent event) {
+    String actionString;
+    switch (event.getAction()) {
+      case MotionEvent.ACTION_DOWN:
+        actionString = "ACTION_DOWN";
+        break;
+      case MotionEvent.ACTION_UP:
+        actionString = "ACTION_UP";
+        break;
+      case MotionEvent.ACTION_MOVE:
+        actionString = "ACTION_MOVE";
+        break;
+      default:
+        actionString = "UNRECOG";
+        break;
+    }
+    return actionString;
   }
 
   @Override
