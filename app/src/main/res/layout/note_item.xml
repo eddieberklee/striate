@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<carbon.widget.LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="horizontal"
+  >
+
+  <carbon.widget.LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+    <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
+      android:id="@+id/hashtag_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:visibility="gone"
+      />
+
+    <carbon.widget.LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      >
+      <View
+        android:id="@+id/dot_control"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        />
+      <View
+        android:id="@+id/line_indicator"
+        android:layout_width="8dp"
+        android:layout_height="match_parent"
+        />
+      <com.compscieddy.eddie_utils.eui.FontTextView
+        android:id="@+id/note_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+    </carbon.widget.LinearLayout>
+
+  </carbon.widget.LinearLayout>
+
+</carbon.widget.LinearLayout>

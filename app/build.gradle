@@ -69,6 +69,9 @@ dependencies {
     // FirebaseUI for Cloud Firestore
     implementation 'com.firebaseui:firebase-ui-firestore:6.2.1'
 
+    // FirebaseUI for Firebase Realtime Database
+    implementation 'com.firebaseui:firebase-ui-database:6.3.0'
+
     // Emoji is used inside of the Font Views
     implementation 'com.vanniktech:emoji-ios:0.5.1'
 

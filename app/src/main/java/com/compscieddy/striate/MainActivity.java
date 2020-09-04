@@ -182,7 +182,7 @@ public class MainActivity extends BaseActivity {
 
   private void init() {
     mGodViewPager.setAdapter(new GodPagerAdapter(MainActivity.this, getSupportFragmentManager()));
-    mGodViewPager.setCurrentItem(SETTINGS_POSITION);
+    mGodViewPager.setCurrentItem(HOME_POSITION);
 
     setGodFragmentButtonsUnselected();
   }
