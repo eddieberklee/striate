@@ -40,6 +40,11 @@ public class Note {
     // for firebase
   }
 
+  public Note(String noteText) {
+    mNoteText = noteText;
+    mCreatedAtMillis = System.currentTimeMillis();
+  }
+
   @Exclude
   public static String generateNoteId() {
     return getNoteReference()
@@ -57,27 +62,45 @@ public class Note {
   @Exclude
   public static Query getNoteQuery() {
     return getNoteReference()
-        .orderByChild(Note.FIELD_CREATED_AT_MILLIS);
+        .orderByPriority();
   }
 
   @Exclude
-  public void saveOnFirestore() {
-    saveOnFirestore(null);
+  public void saveOnFirebaseRealtimeDatabase() {
+    saveOnFirebaseRealtimeDatabase(null);
   }
 
   @Exclude
-  public void saveOnFirestore(@Nullable final Runnable onSuccessRunnable) {
-    if (onSuccessRunnable != null) {
-      onSuccessRunnable.run();
-    }
-//    CrashUtil.log("Failed to save entry with id: " + getId());
+  public void saveOnFirebaseRealtimeDatabase(@Nullable final Runnable onSuccessRunnable) {
+    DatabaseReference newNoteRef = getNoteReference().push();
+
+    // need to set a negative timestamp for ordering in reverse chronological
+    long priority = 0 - getCreatedAtMillis();
+
+    newNoteRef
+        .setValue(Note.this, priority)
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+            Timber.d("Successfully saved note with text: %s", getNoteText());
+            if (onSuccessRunnable != null) {
+              onSuccessRunnable.run();
+            }
+          }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            CrashUtil.log("Failed to save entry with id: " + getId());
+          }
+        });
   }
 
   /**
    * This is useful in cases where the Entry class doesn't have all the updated fields. This
    * prevents saving to Firestore with weird values.
    */
-  public void saveFieldOnFirestore(String field, Object value) {
+  public void saveFieldOnFirebaseRealtimeDatabase(String field, Object value) {
     getNoteReference()
         .child(field)
         .setValue(value)

@@ -60,24 +60,43 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   public void setNote(Note note) {
     mNote = note;
 
+    maybeFetchHashtag();
+
+    binding.noteTextAutocomplete.setText(note.getNoteText());
+  }
+
+  private void maybeFetchHashtag() {
     boolean doesHashtagExist = !TextUtils.isEmpty(mNote.getHashtagId());
     if (doesHashtagExist) {
       fetchHashtag();
     } else {
       // hide hashtag-related views
-      binding.lineIndicator.setVisibility(View.GONE);
+      initNoHashtag();
     }
+  }
 
-    binding.noteText.setText(note.getNoteText());
+  private void initNoHashtag() {
+    binding.lineIndicator.setVisibility(View.GONE);
+    binding.dotControl.setVisibility(View.VISIBLE);
+
+    initDot();
   }
 
   private void fetchHashtag() {
     Hashtag.getHashtag(mNote.getHashtagId(), hashtag -> {
       mHashtag = hashtag;
       if (mHashtag != null) {
-        initHashtag();
+        initYesHashtag();
       }
     });
+  }
+
+  private void initYesHashtag() {
+    initHashtag();
+    initLine();
+  }
+
+  private void initDot() {
   }
 
   /**
@@ -94,6 +113,10 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.hashtagText.setLayoutParams(hashtagParams);
 
     expandHashtagView();
+  }
+
+  private void initLine() {
+
   }
 
   private void expandHashtagView() {
