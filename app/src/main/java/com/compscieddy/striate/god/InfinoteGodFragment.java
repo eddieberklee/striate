@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import timber.log.Timber;
 
 public class InfinoteGodFragment extends Fragment {
 
@@ -124,13 +123,11 @@ public class InfinoteGodFragment extends Fragment {
     binding.notesRecyclerView.requestDisallowInterceptTouchEvent(true);
 
     binding.notesRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+
+      private int mRandomColor;
+
       @Override
       public boolean onTouch(View v, MotionEvent event) {
-        Timber.d(
-            "notes view onTouch: %s (y %s)",
-            getActionString(event),
-            event.getY());
-
         @Nullable View noteView = getNoteViewForY(event.getY());
         if (noteView == null) {
           return false;
@@ -143,7 +140,10 @@ public class InfinoteGodFragment extends Fragment {
         }
 
         if (isActionDown(event) || isActionMove(event)) {
-          noteHolder.highlight(getRandomColor());
+          if (isActionDown(event)) {
+            mRandomColor = getRandomColor();
+          }
+          noteHolder.highlight(mRandomColor);
           if (!mHighlightedNoteHolders.contains(noteHolder)) {
             VibrationEtil.vibrate(noteView);
             // todo: this contains might not work perfectly

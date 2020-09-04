@@ -36,20 +36,18 @@
         android:layout_height="match_parent"
         android:clipChildren="false"
         android:clipToPadding="false"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="14dp"
         >
         <carbon.widget.FrameLayout
           android:id="@+id/dot_control"
-          android:layout_width="5dp"
-          android:layout_height="5dp"
+          android:layout_width="4dp"
+          android:layout_height="4dp"
           android:layout_gravity="center_vertical"
-          android:background="?attr/fgPrimaryT15"
+          android:background="?attr/fgPrimaryT10"
           android:clipChildren="false"
           android:clipToPadding="false"
           app:carbon_cornerRadius="999dp"
-          app:carbon_elevation="2dp"
-          app:carbon_elevationShadowColor="?attr/fgPrimaryT50"
           />
         <View
           android:id="@+id/line_indicator"
@@ -64,6 +62,7 @@
         android:background="@null"
         android:paddingTop="6dp"
         android:paddingBottom="6dp"
+        android:textColor="?attr/fgPrimary"
         android:textSize="13sp"
         />
     </carbon.widget.LinearLayout>

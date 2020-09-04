@@ -115,7 +115,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.lineIndicator.setBackgroundColor(color);
 
     MarginLayoutParams lineParams = (MarginLayoutParams) binding.lineIndicator.getLayoutParams();
-    lineParams.leftMargin = Etil.dpToPx(40);
+    lineParams.leftMargin = Etil.dpToPx(50);
     lineParams.rightMargin = Etil.dpToPx(-5);
   }
 

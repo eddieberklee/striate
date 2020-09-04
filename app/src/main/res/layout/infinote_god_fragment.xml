@@ -4,6 +4,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/GodFragmentRootContainer"
+  android:background="?attr/bgPrimary"
   android:clipChildren="false"
   android:clipToPadding="false"
   >
@@ -30,7 +31,8 @@
     android:paddingTop="8dp"
     android:paddingRight="14dp"
     android:paddingBottom="8dp"
-    android:textColorHint="@color/black_t40"
+    android:textColor="?attr/fgPrimary"
+    android:textColorHint="?attr/fgPrimaryT40"
     android:textSize="13sp"
     />
 
