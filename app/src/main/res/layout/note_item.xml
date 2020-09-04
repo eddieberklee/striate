@@ -58,13 +58,7 @@
       </carbon.widget.FrameLayout>
       <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
         android:id="@+id/note_text_autocomplete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:textColor="?attr/fgPrimary"
-        android:textSize="13sp"
+        style="@style/NoteAutoComplete"
         />
     </carbon.widget.LinearLayout>
 

@@ -21,19 +21,13 @@
 
   <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
     android:id="@+id/new_note_autocomplete"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    style="@style/NoteAutoComplete"
     android:layout_gravity="bottom"
     android:layout_marginBottom="80dp"
-    android:background="@null"
     android:hint="What's on your mind?"
     android:paddingLeft="14dp"
-    android:paddingTop="8dp"
     android:paddingRight="14dp"
-    android:paddingBottom="8dp"
-    android:textColor="?attr/fgPrimary"
     android:textColorHint="?attr/fgPrimaryT40"
-    android:textSize="13sp"
     />
 
 </FrameLayout>
