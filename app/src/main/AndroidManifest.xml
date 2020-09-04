@@ -2,7 +2,7 @@
 <manifest
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  package="com.compscieddy.infinote">
+  package="com.compscieddy.striate">
 
   <uses-permission android:name="android.permission.INTERNET" />
   <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -10,7 +10,7 @@
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
   <application
-    android:name=".InfinoteApplication"
+    android:name="com.compscieddy.striate.StriateApplication"
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
@@ -33,7 +33,7 @@
 
     <activity android:name=".AuthenticationActivity" />
 
-    <receiver android:name=".DailyNotificationPublisher" />
+    <receiver android:name="com.compscieddy.striate.DailyNotificationPublisher" />
 
   </application>
 

@@ -9,16 +9,16 @@
 
   <color name="dialog_black_background">@color/black_t70</color>
 
-  <color name="infinote_red">#FB9595</color>
-  <color name="infinote_orange">#F8C196</color>
-  <color name="infinote_yellow">#E8D09C</color>
-  <color name="infinote_green">#B2DFA3</color>
-  <color name="infinote_teal">#A7DEC7</color>
-  <color name="infinote_blue">#7CC0EA</color>
-  <color name="infinote_purple">#B2A0D7</color>
-  <color name="infinote_pink">#E7BCDF</color>
-  <color name="infinote_light_grey">#A9B6C6</color>
-  <color name="infinote_dark_grey">#758696</color>
+  <color name="striate_red">#FB9595</color>
+  <color name="striate_orange">#F8C196</color>
+  <color name="striate_yellow">#E8D09C</color>
+  <color name="striate_green">#B2DFA3</color>
+  <color name="striate_teal">#A7DEC7</color>
+  <color name="striate_blue">#7CC0EA</color>
+  <color name="striate_purple">#B2A0D7</color>
+  <color name="striate_pink">#E7BCDF</color>
+  <color name="striate_light_grey">#A9B6C6</color>
+  <color name="striate_dark_grey">#758696</color>
 
   <color name="call_to_action_blue">#229BFF</color>
 

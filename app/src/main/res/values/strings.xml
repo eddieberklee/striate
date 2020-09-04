@@ -5,9 +5,9 @@
     967564996807-ahtbmpsu65av8ihtct66k1446ugmv0ss.apps.googleusercontent.com
   </string>
 
-  <string name="app_name">Capsule</string>
+  <string name="app_name">Striate</string>
 
-  <!-- Displayed on the login screen. It's a greeting and an explanation of what I'm trying to accomplish with Infinote. -->
+  <!-- Displayed on the login screen. It's a greeting and an explanation of what I'm trying to accomplish with Striate. -->
   <string name="authentication_description">
     "Journaling app for storing your thoughts in a clean and aesthetic capsule of memories."
   </string>
@@ -92,14 +92,14 @@
   <string name="circle_navbar_title">Home</string>
   <string name="photos_navbar_title">Photos</string>
 
-  <string name="onboarding_day_1_title">Welcome to Capsule</string>
-  <string name="onboarding_day_2_title">Day 2 of Capsule</string>
-  <string name="onboarding_day_3_title">Day 3 of Capsule</string>
-  <string name="onboarding_day_4_title">Day 4 of Capsule</string>
-  <string name="onboarding_day_5_title">Day 5 of Capsule</string>
+  <string name="onboarding_day_1_title">Welcome to Striate</string>
+  <string name="onboarding_day_2_title">Day 2 of Striate</string>
+  <string name="onboarding_day_3_title">Day 3 of Striate</string>
+  <string name="onboarding_day_4_title">Day 4 of Striate</string>
+  <string name="onboarding_day_5_title">Day 5 of Striate</string>
 
   <string name="onboarding_day_1_description">
-    "The first day of the rest of your life. Capsule is how you get thoughts from your head onto paper..
+    "The first day of the rest of your life. Striate is how you get thoughts from your head onto paper..
     \n-Ed"
   </string>
   <string name="onboarding_day_2_description">
@@ -115,7 +115,7 @@
     \n-Ed"
   </string>
   <string name="onboarding_day_5_description">
-    "Thanks for making it to Day 5. I want to make a better tool for you. How can Capsule better serve you? Email me at capsulejournaling@gmail.com
+    "Thanks for making it to Day 5. I want to make a better tool for you. How can Striate better serve you? Email me at capsulejournaling@gmail.com
     \n-Ed"
   </string>
 
