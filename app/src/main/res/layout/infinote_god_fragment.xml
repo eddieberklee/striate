@@ -24,13 +24,13 @@
     android:layout_height="wrap_content"
     android:layout_gravity="bottom"
     android:layout_marginBottom="80dp"
+    android:background="@null"
     android:hint="What's on your mind?"
     android:paddingLeft="14dp"
     android:paddingTop="8dp"
     android:paddingRight="14dp"
     android:paddingBottom="8dp"
     android:textColorHint="@color/black_t40"
-    android:textCursorDrawable="@color/black"
     android:textSize="13sp"
     />
 

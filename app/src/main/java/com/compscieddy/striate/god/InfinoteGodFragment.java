@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
 import com.compscieddy.eddie_utils.etil.VibrationEtil;
+import com.compscieddy.striate.R;
 import com.compscieddy.striate.databinding.InfinoteGodFragmentBinding;
 import com.compscieddy.striate.databinding.NoteItemBinding;
 import com.compscieddy.striate.model.Note;
 import com.compscieddy.striate.note.NoteHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,10 +31,27 @@ import timber.log.Timber;
 
 public class InfinoteGodFragment extends Fragment {
 
+  List<NoteHolder> mHighlightedNoteHolders = new ArrayList<>();
   private InfinoteGodFragmentBinding binding;
   private Resources res;
   private FirebaseRecyclerAdapter mFirebaseAdapter;
   private Context c;
+
+  private static boolean isActionDown(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_DOWN;
+  }
+
+  private static boolean isActionMove(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_MOVE;
+  }
+
+  private static boolean isActionUp(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_UP;
+  }
+
+  private static boolean isActionCancel(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_CANCEL;
+  }
 
   @Nullable
   @Override
@@ -100,20 +121,61 @@ public class InfinoteGodFragment extends Fragment {
         true));
     binding.notesRecyclerView.setAdapter(mFirebaseAdapter);
 
+    binding.notesRecyclerView.requestDisallowInterceptTouchEvent(true);
+
     binding.notesRecyclerView.setOnTouchListener(new View.OnTouchListener() {
       @Override
       public boolean onTouch(View v, MotionEvent event) {
-        Timber.d("notes recycler view onTouch: " + getActionString(event));
+        Timber.d(
+            "notes view onTouch: %s (y %s)",
+            getActionString(event),
+            event.getY());
 
         @Nullable View noteView = getNoteViewForY(event.getY());
-        if (noteView != null) {
-          NoteHolder noteHolder = getNoteHolderForNoteView(noteView);
-          noteHolder.setHighlight();
+        if (noteView == null) {
+          return false;
         }
 
+        NoteHolder noteHolder = getNoteHolderForNoteView(noteView);
+
+        if (event.getX() > noteHolder.getNoteTextViewX()) {
+          return false;
+        }
+
+        if (isActionDown(event) || isActionMove(event)) {
+          noteHolder.highlight(getRandomColor());
+          if (!mHighlightedNoteHolders.contains(noteHolder)) {
+            VibrationEtil.vibrate(noteView);
+            // todo: this contains might not work perfectly
+            mHighlightedNoteHolders.add(noteHolder);
+          }
+        } else if (isActionUp(event)) {
+          for (NoteHolder holder : mHighlightedNoteHolders) {
+            holder.setHighlight();
+          }
+
+        } else if (isActionCancel(event)) {
+          noteHolder.cancelHighlight();
+        }
+
+        // false so we still allow parent views to handle their own touches
         return false;
       }
     });
+  }
+
+  private int getRandomColor() {
+    int[] colors = new int[] {
+        R.color.striate_red,
+        R.color.striate_orange,
+        R.color.striate_yellow,
+        R.color.striate_green,
+        R.color.striate_teal,
+        R.color.striate_blue,
+        R.color.striate_purple,
+        R.color.striate_dark_grey,
+        };
+    return res.getColor(colors[(int) (Math.random() * (colors.length - 1))]);
   }
 
   private NoteHolder getNoteHolderForNoteView(View noteView) {
@@ -136,6 +198,9 @@ public class InfinoteGodFragment extends Fragment {
         break;
       case MotionEvent.ACTION_MOVE:
         actionString = "ACTION_MOVE";
+        break;
+      case MotionEvent.ACTION_CANCEL:
+        actionString = "ACTION_CANCEL";
         break;
       default:
         actionString = "UNRECOG";

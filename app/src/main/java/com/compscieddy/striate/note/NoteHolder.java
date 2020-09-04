@@ -3,11 +3,10 @@ package com.compscieddy.striate.note;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 
 import com.compscieddy.eddie_utils.etil.Etil;
 import com.compscieddy.striate.databinding.NoteItemBinding;
@@ -31,31 +30,6 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     c = binding.getRoot().getContext();
     this.binding = binding;
     res = c.getResources();
-
-    binding.getRoot().setOnTouchListener((v, event) -> {
-      String actionString = getActionString(event);
-      Timber.d("onTouch v: " + v + " " + actionString);
-      return true;
-    });
-  }
-
-  private String getActionString(MotionEvent event) {
-    String actionString;
-    switch (event.getAction()) {
-      case MotionEvent.ACTION_DOWN:
-        actionString = "ACTION_DOWN";
-        break;
-      case MotionEvent.ACTION_UP:
-        actionString = "ACTION_UP";
-        break;
-      case MotionEvent.ACTION_MOVE:
-        actionString = "ACTION_MOVE";
-        break;
-      default:
-        actionString = "UNRECOG";
-        break;
-    }
-    return actionString;
   }
 
   public void setNote(Note note) {
@@ -134,10 +108,40 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     heightAnimator.start();
   }
 
-  public void setHighlight() {
+  public void highlight(int color) {
     binding.lineIndicator.setVisibility(View.VISIBLE);
     binding.dotControl.setVisibility(View.GONE);
 
-    binding.lineIndicator.setBackgroundColor(Color.RED);
+    binding.lineIndicator.setBackgroundColor(color);
+
+    MarginLayoutParams lineParams = (MarginLayoutParams) binding.lineIndicator.getLayoutParams();
+    lineParams.leftMargin = Etil.dpToPx(40);
+    lineParams.rightMargin = Etil.dpToPx(-5);
+  }
+
+  public void setHighlight() {
+    Timber.d("notes setHighlight()");
+    resetHashtagLineIndicatorMargins();
+  }
+
+  private void resetHashtagLineIndicatorMargins() {
+    MarginLayoutParams lineParams = (MarginLayoutParams) binding.lineIndicator.getLayoutParams();
+    lineParams.leftMargin = 0;
+    lineParams.rightMargin = 0;
+    binding.lineIndicator.setLayoutParams(lineParams);
+  }
+
+  public void cancelHighlight() {
+    hideHashtagLineIndicatorShowDot();
+    resetHashtagLineIndicatorMargins();
+  }
+
+  private void hideHashtagLineIndicatorShowDot() {
+    binding.lineIndicator.setVisibility(View.GONE);
+    binding.dotControl.setVisibility(View.VISIBLE);
+  }
+
+  public float getNoteTextViewX() {
+    return binding.noteTextAutocomplete.getLeft();
   }
 }

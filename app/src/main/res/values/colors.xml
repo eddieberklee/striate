@@ -2,7 +2,7 @@
 <resources>
   <color name="colorPrimary">@color/black</color>
   <color name="colorPrimaryDark">@color/black</color>
-  <color name="colorAccent">@color/white</color>
+  <color name="colorAccent">@color/striate_dark_grey</color>
 
   <!-- Standard Colors -->
   <color name="standard_faded_text_color">@color/black_t60</color>
