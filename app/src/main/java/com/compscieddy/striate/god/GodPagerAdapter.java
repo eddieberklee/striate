@@ -11,7 +11,7 @@ public class GodPagerAdapter extends FragmentPagerAdapter {
 
   public static final int SETTINGS_POSITION = 0;
   public static final int HOME_POSITION = 1;
-  public static final int DISCOVER_POSITION = 2;
+  public static final int INFINOTE_POSITION = 2;
 
   public static final int DEFAULT_GOD_POSITION = HOME_POSITION;
 
@@ -30,7 +30,7 @@ public class GodPagerAdapter extends FragmentPagerAdapter {
         return new SettingsGodFragment();
       case HOME_POSITION:
         return new MainGodFragment();
-      case DISCOVER_POSITION:
+      case INFINOTE_POSITION:
       default:
         return new InfinoteGodFragment();
     }

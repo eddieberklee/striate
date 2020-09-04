@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 import static com.compscieddy.striate.Analytics.MAIN_ACTIVITY_OPEN;
 import static com.compscieddy.striate.god.GodPagerAdapter.DEFAULT_GOD_POSITION;
-import static com.compscieddy.striate.god.GodPagerAdapter.DISCOVER_POSITION;
+import static com.compscieddy.striate.god.GodPagerAdapter.INFINOTE_POSITION;
 import static com.compscieddy.striate.god.GodPagerAdapter.HOME_POSITION;
 import static com.compscieddy.striate.god.GodPagerAdapter.SETTINGS_POSITION;
 
@@ -182,7 +182,7 @@ public class MainActivity extends BaseActivity {
 
   private void init() {
     mGodViewPager.setAdapter(new GodPagerAdapter(MainActivity.this, getSupportFragmentManager()));
-    mGodViewPager.setCurrentItem(DEFAULT_GOD_POSITION);
+    mGodViewPager.setCurrentItem(SETTINGS_POSITION);
 
     setGodFragmentButtonsUnselected();
   }
@@ -192,7 +192,7 @@ public class MainActivity extends BaseActivity {
         SETTINGS_POSITION));
     mHomeNavbarContainer.setOnClickListener(view -> mGodViewPager.setCurrentItem(HOME_POSITION));
     mDiscoverNavbarContainer.setOnClickListener(view -> mGodViewPager.setCurrentItem(
-        DISCOVER_POSITION));
+        INFINOTE_POSITION));
 
     mGodPageChangeListener = new OnPageChangeListener() {
       @Override

@@ -71,7 +71,7 @@
       <com.compscieddy.eddie_utils.eui.ColorImageView
         android:id="@+id/discover_god_fragment_icon"
         style="@style/NavigationBarItemIcon"
-        android:src="@drawable/ic_picture_polaroid_landscape"
+        android:src="@drawable/ic_all_inclusive"
         />
       <com.compscieddy.eddie_utils.eui.FontTextView
         android:id="@+id/discover_god_fragment_title"
