@@ -25,6 +25,7 @@
       />
 
     <carbon.widget.LinearLayout
+      android:id="@+id/main_note_container"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:clipChildren="false"

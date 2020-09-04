@@ -136,6 +136,7 @@ public class InfinoteGodFragment extends Fragment {
         NoteHolder noteHolder = getNoteHolderForNoteView(noteView);
 
         if (event.getX() > noteHolder.getNoteTextViewX()) {
+          cancelHighlightingAndClear();
           return false;
         }
 
@@ -153,13 +154,21 @@ public class InfinoteGodFragment extends Fragment {
           for (NoteHolder holder : mHighlightedNoteHolders) {
             holder.setHighlight();
           }
+          mHighlightedNoteHolders.clear();
 
         } else if (isActionCancel(event)) {
-          noteHolder.cancelHighlight();
+          cancelHighlightingAndClear();
         }
 
         // false so we still allow parent views to handle their own touches
-        return false;
+        return true;
+      }
+
+      private void cancelHighlightingAndClear() {
+        for (NoteHolder holder : mHighlightedNoteHolders) {
+          holder.cancelHighlight();
+        }
+        mHighlightedNoteHolders.clear();
       }
     });
   }

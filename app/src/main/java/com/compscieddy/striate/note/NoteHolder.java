@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.MarginLayoutParams;
 
 import com.compscieddy.eddie_utils.etil.Etil;
 import com.compscieddy.striate.databinding.NoteItemBinding;
@@ -114,26 +113,27 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
     binding.lineIndicator.setBackgroundColor(color);
 
-    MarginLayoutParams lineParams = (MarginLayoutParams) binding.lineIndicator.getLayoutParams();
-    lineParams.leftMargin = Etil.dpToPx(50);
-    lineParams.rightMargin = Etil.dpToPx(-5);
+    indentViews();
+  }
+
+  private void indentViews() {
+    binding.mainNoteContainer.setTranslationX(Etil.dpToPx(50));
+    binding.noteTextAutocomplete.setTranslationX(Etil.dpToPx(-5));
+  }
+
+  private void resetIndentViews() {
+    binding.mainNoteContainer.setTranslationX(0);
+    binding.noteTextAutocomplete.setTranslationX(0);
   }
 
   public void setHighlight() {
     Timber.d("notes setHighlight()");
-    resetHashtagLineIndicatorMargins();
-  }
-
-  private void resetHashtagLineIndicatorMargins() {
-    MarginLayoutParams lineParams = (MarginLayoutParams) binding.lineIndicator.getLayoutParams();
-    lineParams.leftMargin = 0;
-    lineParams.rightMargin = 0;
-    binding.lineIndicator.setLayoutParams(lineParams);
+    resetIndentViews();
   }
 
   public void cancelHighlight() {
     hideHashtagLineIndicatorShowDot();
-    resetHashtagLineIndicatorMargins();
+    resetIndentViews();
   }
 
   private void hideHashtagLineIndicatorShowDot() {
