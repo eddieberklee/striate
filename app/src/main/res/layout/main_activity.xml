@@ -76,7 +76,7 @@
       <com.compscieddy.eddie_utils.eui.FontTextView
         android:id="@+id/discover_god_fragment_title"
         style="@style/NavigationBarItemTitle"
-        android:text="@string/photos_navbar_title"
+        android:text="@string/infinote_navbar_title"
         />
     </LinearLayout>
   </carbon.widget.LinearLayout>

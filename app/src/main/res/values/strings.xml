@@ -2,7 +2,7 @@
 
   <!-- Dev Keys -->
   <string name="firebase_web_client_id">
-    967564996807-ahtbmpsu65av8ihtct66k1446ugmv0ss.apps.googleusercontent.com
+    73112432375-thsn466319j0vqjn0j4judeosi6lebqe.apps.googleusercontent.com
   </string>
 
   <string name="app_name">Striate</string>
@@ -89,8 +89,8 @@
   </string-array>
 
   <string name="settings_navbar_title">Settings</string>
-  <string name="circle_navbar_title">Home</string>
-  <string name="photos_navbar_title">Photos</string>
+  <string name="circle_navbar_title">Daily Notes</string>
+  <string name="infinote_navbar_title">Infinote</string>
 
   <string name="onboarding_day_1_title">Welcome to Striate</string>
   <string name="onboarding_day_2_title">Day 2 of Striate</string>

@@ -32,7 +32,7 @@ public class GodPagerAdapter extends FragmentPagerAdapter {
         return new MainGodFragment();
       case DISCOVER_POSITION:
       default:
-        return new DiscoverGodFragment();
+        return new InfinoteGodFragment();
     }
   }
 
