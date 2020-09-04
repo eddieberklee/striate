@@ -3,6 +3,8 @@ package com.compscieddy.striate.note;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,6 +14,7 @@ import com.compscieddy.striate.model.Hashtag;
 import com.compscieddy.striate.model.Note;
 
 import androidx.recyclerview.widget.RecyclerView;
+import timber.log.Timber;
 
 public class NoteHolder extends RecyclerView.ViewHolder {
 
@@ -27,12 +30,43 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     c = binding.getRoot().getContext();
     this.binding = binding;
     res = c.getResources();
+
+    binding.getRoot().setOnTouchListener((v, event) -> {
+      String actionString = getActionString(event);
+      Timber.d("onTouch v: " + v + " " + actionString);
+      return true;
+    });
+  }
+
+  private String getActionString(MotionEvent event) {
+    String actionString;
+    switch (event.getAction()) {
+      case MotionEvent.ACTION_DOWN:
+        actionString = "ACTION_DOWN";
+        break;
+      case MotionEvent.ACTION_UP:
+        actionString = "ACTION_UP";
+        break;
+      case MotionEvent.ACTION_MOVE:
+        actionString = "ACTION_MOVE";
+        break;
+      default:
+        actionString = "UNRECOG";
+        break;
+    }
+    return actionString;
   }
 
   public void setNote(Note note) {
     mNote = note;
 
-    fetchHashtag();
+    boolean doesHashtagExist = !TextUtils.isEmpty(mNote.getHashtagId());
+    if (doesHashtagExist) {
+      fetchHashtag();
+    } else {
+      // hide hashtag-related views
+      binding.lineIndicator.setVisibility(View.GONE);
+    }
 
     binding.noteText.setText(note.getNoteText());
   }
@@ -50,13 +84,14 @@ public class NoteHolder extends RecyclerView.ViewHolder {
    * Start from 0 height and grow it to full height.
    */
   private void initHashtag() {
+    binding.lineIndicator.setVisibility(View.VISIBLE);
+    binding.hashtagText.setVisibility(View.VISIBLE);
+
     binding.hashtagText.setText(mHashtag.getHashtagText());
 
     ViewGroup.LayoutParams hashtagParams = binding.hashtagText.getLayoutParams();
     hashtagParams.height = 0;
     binding.hashtagText.setLayoutParams(hashtagParams);
-
-    binding.hashtagText.setVisibility(View.VISIBLE);
 
     expandHashtagView();
   }
