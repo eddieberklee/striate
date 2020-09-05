@@ -26,10 +26,30 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class InfinoteGodFragment extends Fragment {
 
+  private FirebaseRecyclerAdapter mFirebaseAdapter = new FirebaseRecyclerAdapter<Note, NoteHolder>(
+      new FirebaseRecyclerOptions.Builder<Note>()
+          .setQuery(Note.getNoteQuery(), Note.class)
+          .build()) {
+    @NonNull
+    @Override
+    public NoteHolder onCreateViewHolder(
+        @NonNull ViewGroup parent, int viewType) {
+      return new NoteHolder(
+          NoteItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+    }
+
+    @Override
+    protected void onBindViewHolder(
+        @NonNull NoteHolder holder,
+        int position,
+        @NonNull Note note) {
+      holder.setNote(note);
+    }
+  };
+
   private Context c;
   private Resources res;
   private InfinoteGodFragmentBinding binding;
-  private FirebaseRecyclerAdapter mFirebaseAdapter;
   private NoteCategorizer mNoteCategorizer;
 
   @Nullable
@@ -73,27 +93,6 @@ public class InfinoteGodFragment extends Fragment {
   }
 
   private void initFirebaseRecyclerView() {
-    FirebaseRecyclerOptions<Note> options = new FirebaseRecyclerOptions.Builder<Note>()
-        .setQuery(Note.getNoteQuery(), Note.class)
-        .build();
-    mFirebaseAdapter = new FirebaseRecyclerAdapter<Note, NoteHolder>(options) {
-      @NonNull
-      @Override
-      public NoteHolder onCreateViewHolder(
-          @NonNull ViewGroup parent, int viewType) {
-        return new NoteHolder(
-            NoteItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-      }
-
-      @Override
-      protected void onBindViewHolder(
-          @NonNull NoteHolder holder,
-          int position,
-          @NonNull Note note) {
-        holder.setNote(note);
-      }
-    };
-
     binding.notesRecyclerView.setLayoutManager(new LinearLayoutManager(
         c,
         RecyclerView.VERTICAL,
