@@ -3,11 +3,14 @@ package com.compscieddy.striate.note;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 
 import com.compscieddy.eddie_utils.etil.Etil;
+import com.compscieddy.eddie_utils.etil.VibrationEtil;
 import com.compscieddy.striate.databinding.NoteItemBinding;
 import com.compscieddy.striate.model.Hashtag;
 import com.compscieddy.striate.model.Note;
@@ -34,9 +37,35 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   public void setNote(Note note) {
     mNote = note;
 
+    initNoteAutoComplete();
     maybeFetchHashtag();
 
     binding.noteTextAutocomplete.setText(note.getNoteText());
+  }
+
+  private void initNoteAutoComplete() {
+    binding.noteTextAutocomplete.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+        | InputType.TYPE_CLASS_TEXT
+        | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+        | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
+    binding.noteTextAutocomplete.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    binding.noteTextAutocomplete.setOnEditorActionListener((v, actionId, event) -> {
+      if (actionId == EditorInfo.IME_ACTION_DONE) {
+        VibrationEtil.vibrate(binding.noteTextAutocomplete);
+
+        String updatedNoteText = binding.noteTextAutocomplete.getText().toString();
+        boolean hasNoteTextChanged = !TextUtils.equals(updatedNoteText, mNote.getNoteText());
+        if (hasNoteTextChanged) {
+          mNote.setNoteText(updatedNoteText);
+          mNote.saveFieldOnFirebaseRealtimeDatabase(Note.FIELD_NOTE_TEXT, updatedNoteText);
+
+          binding.noteTextAutocomplete.clearFocus();
+        }
+
+        return true;
+      }
+      return false;
+    });
   }
 
   private void maybeFetchHashtag() {

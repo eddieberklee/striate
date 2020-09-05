@@ -89,7 +89,7 @@ public class InfinoteGodFragment extends Fragment {
 
   private void saveNewNote(String noteText) {
     Note newNote = new Note(noteText);
-    newNote.saveOnFirebaseRealtimeDatabase();
+    newNote.saveNewEntryOnFirebaseRealtimeDatabase();
   }
 
   private void initFirebaseRecyclerView() {

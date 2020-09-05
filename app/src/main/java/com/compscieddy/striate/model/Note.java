@@ -66,13 +66,14 @@ public class Note {
   }
 
   @Exclude
-  public void saveOnFirebaseRealtimeDatabase() {
-    saveOnFirebaseRealtimeDatabase(null);
+  public void saveNewEntryOnFirebaseRealtimeDatabase() {
+    saveNewEntryOnFirebaseRealtimeDatabase(null);
   }
 
   @Exclude
-  public void saveOnFirebaseRealtimeDatabase(@Nullable final Runnable onSuccessRunnable) {
+  public void saveNewEntryOnFirebaseRealtimeDatabase(@Nullable final Runnable onSuccessRunnable) {
     DatabaseReference newNoteRef = getNoteReference().push();
+    setId(newNoteRef.getKey());
 
     // need to set a negative timestamp for ordering in reverse chronological
     long priority = 0 - getCreatedAtMillis();
@@ -96,24 +97,21 @@ public class Note {
         });
   }
 
-  /**
-   * This is useful in cases where the Entry class doesn't have all the updated fields. This
-   * prevents saving to Firestore with weird values.
-   */
-  public void saveFieldOnFirebaseRealtimeDatabase(String field, Object value) {
+  public void saveFieldOnFirebaseRealtimeDatabase(final String field, Object value) {
     getNoteReference()
+        .child(getId())
         .child(field)
         .setValue(value)
         .addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
           public void onSuccess(Void aVoid) {
-            // success
+            Timber.d("Successfully save overwrite note id %s", getId());
           }
         })
         .addOnFailureListener(new OnFailureListener() {
           @Override
           public void onFailure(@NonNull Exception e) {
-            CrashUtil.log("Failed to save field " + field + " with value " + value);
+            Timber.e("Failed to overwrite Note with id %s", getId());
           }
         });
   }
