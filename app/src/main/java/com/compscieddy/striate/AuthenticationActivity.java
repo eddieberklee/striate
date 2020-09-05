@@ -149,9 +149,10 @@ public class AuthenticationActivity extends AppCompatActivity {
             .getStatusCode() == 7) { // found out this magic constant through debugging
           Etil.showToast(this, "Not detecting a network connection.");
         } else {
-          CrashUtil.log("Found a non-successful google api sign-in case. Status: " + result.getStatus() + " status code: " + result
-              .getStatus()
-              .getStatusCode());
+          CrashUtil.log(
+              "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Found a non-successful google api sign-in case. Status: " + result.getStatus() + " status code: " + result
+                  .getStatus()
+                  .getStatusCode());
         }
         break;
     }
