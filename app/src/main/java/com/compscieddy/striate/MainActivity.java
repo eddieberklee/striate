@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
 import static com.compscieddy.striate.Analytics.MAIN_ACTIVITY_OPEN;
 import static com.compscieddy.striate.god.GodPagerAdapter.DEFAULT_GOD_POSITION;
 import static com.compscieddy.striate.god.GodPagerAdapter.INFINOTE_POSITION;
-import static com.compscieddy.striate.god.GodPagerAdapter.HOME_POSITION;
 import static com.compscieddy.striate.god.GodPagerAdapter.SETTINGS_POSITION;
 
 public class MainActivity extends BaseActivity {
@@ -27,15 +26,12 @@ public class MainActivity extends BaseActivity {
   @BindView(R.id.god_view_pager) ViewPager mGodViewPager;
 
   @BindView(R.id.settings_god_fragment_icon) ColorImageView mSettingsGodFragmentIcon;
-  @BindView(R.id.home_god_fragment_icon) ColorImageView mHomeGodFragmentIcon;
-  @BindView(R.id.discover_god_fragment_icon) ColorImageView mDiscoverGodFragmentIcon;
+  @BindView(R.id.discover_god_fragment_icon) ColorImageView mInfinoteFragmentIcon;
 
   @BindView(R.id.settings_god_fragment_title) TextView mSettingsGodFragmentTitle;
-  @BindView(R.id.home_god_fragment_title) TextView mHomeGodFragmentTitle;
-  @BindView(R.id.discover_god_fragment_title) TextView mDiscoverGodFragmentTitle;
+  @BindView(R.id.discover_god_fragment_title) TextView mInfinoteGodFragmentTitle;
 
   @BindView(R.id.settings_navbar_container) View mSettingsNavbarContainer;
-  @BindView(R.id.home_navbar_container) View mHomeNavbarContainer;
   @BindView(R.id.discover_navbar_container) View mDiscoverNavbarContainer;
 
   private OnPageChangeListener mGodPageChangeListener;
@@ -182,15 +178,13 @@ public class MainActivity extends BaseActivity {
 
   private void init() {
     mGodViewPager.setAdapter(new GodPagerAdapter(MainActivity.this, getSupportFragmentManager()));
-    mGodViewPager.setCurrentItem(HOME_POSITION);
-
+    mGodViewPager.setCurrentItem(INFINOTE_POSITION);
     setGodFragmentButtonsUnselected();
   }
 
   private void attachListeners() {
     mSettingsNavbarContainer.setOnClickListener(view -> mGodViewPager.setCurrentItem(
         SETTINGS_POSITION));
-    mHomeNavbarContainer.setOnClickListener(view -> mGodViewPager.setCurrentItem(HOME_POSITION));
     mDiscoverNavbarContainer.setOnClickListener(view -> mGodViewPager.setCurrentItem(
         INFINOTE_POSITION));
 
@@ -207,12 +201,9 @@ public class MainActivity extends BaseActivity {
         if (position == GodPagerAdapter.SETTINGS_POSITION) {
           setGodFragmentButtonSelectedState(true, mSettingsGodFragmentIcon,
               mSettingsGodFragmentTitle);
-        } else if (position == GodPagerAdapter.HOME_POSITION) {
-          setGodFragmentButtonSelectedState(true, mHomeGodFragmentIcon,
-              mHomeGodFragmentTitle);
-        } else { // DISCOVER_POSITION
-          setGodFragmentButtonSelectedState(true, mDiscoverGodFragmentIcon,
-              mDiscoverGodFragmentTitle);
+        } else { // INFINOTE_POSITION
+          setGodFragmentButtonSelectedState(true, mInfinoteFragmentIcon,
+              mInfinoteGodFragmentTitle);
         }
       }
 
@@ -227,7 +218,6 @@ public class MainActivity extends BaseActivity {
 
   private void detachListeners() {
     mSettingsNavbarContainer.setOnClickListener(null);
-    mHomeNavbarContainer.setOnClickListener(null);
     mDiscoverNavbarContainer.setOnClickListener(null);
 
     mGodViewPager.removeOnPageChangeListener(mGodPageChangeListener);
@@ -236,9 +226,7 @@ public class MainActivity extends BaseActivity {
   private void setGodFragmentButtonsUnselected() {
     setGodFragmentButtonSelectedState(false, mSettingsGodFragmentIcon,
         mSettingsGodFragmentTitle);
-    setGodFragmentButtonSelectedState(false, mHomeGodFragmentIcon,
-        mHomeGodFragmentTitle);
-    setGodFragmentButtonSelectedState(false, mDiscoverGodFragmentIcon,
-        mDiscoverGodFragmentTitle);
+    setGodFragmentButtonSelectedState(false, mInfinoteFragmentIcon,
+        mInfinoteGodFragmentTitle);
   }
 }

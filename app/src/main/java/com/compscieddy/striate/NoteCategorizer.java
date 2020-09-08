@@ -12,7 +12,6 @@ import com.compscieddy.striate.note.NoteHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -20,9 +19,10 @@ import timber.log.Timber;
 
 public class NoteCategorizer {
 
-  private InfinoteGodFragmentBinding binding;
+  private final Context c;
+  private final Resources res;
   List<NoteHolder> mHighlightedNoteHolders = new ArrayList<>();
-
+  private InfinoteGodFragmentBinding binding;
   View.OnTouchListener mTouchListener = new View.OnTouchListener() {
 
     private float mStartX = -1;
@@ -59,30 +59,10 @@ public class NoteCategorizer {
         return false;
       }
 
-      if (isActionMove(event)) { // DOWN or MOVE
-        noteHolder.highlight(mRandomColor);
-        if (!mHighlightedNoteHolders.contains(noteHolder)) {
-          VibrationEtil.vibrate(noteView);
-          // todo: this contains might not work perfectly, may need to double-check based on note id
-          mHighlightedNoteHolders.add(noteHolder);
-        }
+      if (isActionMove(event)) {
+        handleActionMove(noteView, noteHolder);
       } else if (isActionUp(event)) { // UP
-        for (NoteHolder holder : mHighlightedNoteHolders) {
-          holder.setHighlight();
-        }
-
-        Collections.sort(mHighlightedNoteHolders, new Comparator<NoteHolder>() {
-          @Override public int compare(NoteHolder o1, NoteHolder o2) {
-            return (int) (o1.getNote().getCreatedAtMillis() - o2.getNote().getCreatedAtMillis());
-          }
-        });
-
-        NoteHolder firstNoteHolder = mHighlightedNoteHolders.get(0);
-        firstNoteHolder.initHashtagDragSectionEditor(
-            getNotesFromNoteHolders(mHighlightedNoteHolders),
-            mRandomColor);
-
-        mHighlightedNoteHolders.clear();
+        handleActionUp();
         return false;
       } else if (isActionCancel(event)) { // CANCEL
         cancelHighlightingAndClear();
@@ -93,6 +73,34 @@ public class NoteCategorizer {
       return true;
     }
 
+    private void handleActionMove(View noteView, NoteHolder noteHolder) {
+      noteHolder.highlight(mRandomColor);
+      if (!mHighlightedNoteHolders.contains(noteHolder)) {
+        VibrationEtil.vibrate(noteView);
+        // todo: this contains might not work perfectly, may need to double-check based on note id
+        mHighlightedNoteHolders.add(noteHolder);
+      }
+    }
+
+    private void handleActionUp() {
+      for (NoteHolder holder : mHighlightedNoteHolders) {
+        holder.setHighlight();
+      }
+
+      Collections.sort(
+          mHighlightedNoteHolders,
+          (o1, o2) -> (int) (o1.getNote().getCreatedAtMillis() - o2
+              .getNote()
+              .getCreatedAtMillis()));
+
+      NoteHolder firstNoteHolder = mHighlightedNoteHolders.get(0);
+      firstNoteHolder.initHashtagDragSectionEditor(
+          getNotesFromNoteHolders(mHighlightedNoteHolders),
+          mRandomColor);
+
+      mHighlightedNoteHolders.clear();
+    }
+
     private void cancelHighlightingAndClear() {
       for (NoteHolder holder : mHighlightedNoteHolders) {
         holder.cancelHighlight();
@@ -101,21 +109,34 @@ public class NoteCategorizer {
     }
   };
 
+  public NoteCategorizer(InfinoteGodFragmentBinding binding) {
+    this.binding = binding;
+    c = binding.getRoot().getContext();
+    res = c.getResources();
+  }
+
+  private static boolean isActionDown(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_DOWN;
+  }
+
+  private static boolean isActionMove(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_MOVE;
+  }
+
+  private static boolean isActionUp(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_UP;
+  }
+
+  private static boolean isActionCancel(MotionEvent event) {
+    return event.getAction() == MotionEvent.ACTION_CANCEL;
+  }
+
   private List<Note> getNotesFromNoteHolders(List<NoteHolder> noteHolders) {
     List<Note> notes = new ArrayList<>();
     for (NoteHolder holder : mHighlightedNoteHolders) {
       notes.add(holder.getNote());
     }
     return notes;
-  }
-
-  private final Context c;
-  private final Resources res;
-
-  public NoteCategorizer(InfinoteGodFragmentBinding binding) {
-    this.binding = binding;
-    c = binding.getRoot().getContext();
-    res = c.getResources();
   }
 
   public View.OnTouchListener getTouchListener() {
@@ -131,16 +152,16 @@ public class NoteCategorizer {
   }
 
   private int getRandomColor() {
-    int[] colors = new int[]{
-        R.color.striate_red,
-        R.color.striate_orange,
-        R.color.striate_yellow,
-        R.color.striate_green,
-        R.color.striate_teal,
-        R.color.striate_blue,
-        R.color.striate_purple,
+    int[] colors = new int[] {
+        R.color.divide_red,
+        R.color.divide_orange,
+        R.color.divide_yellow,
+        R.color.divide_green,
+        R.color.divide_blue,
+        R.color.divide_darkblue,
+        R.color.divide_purple,
         R.color.striate_dark_grey,
-    };
+        };
     return res.getColor(colors[(int) (Math.random() * (colors.length - 1))]);
   }
 
@@ -165,22 +186,6 @@ public class NoteCategorizer {
         break;
     }
     return actionString;
-  }
-
-  private static boolean isActionDown(MotionEvent event) {
-    return event.getAction() == MotionEvent.ACTION_DOWN;
-  }
-
-  private static boolean isActionMove(MotionEvent event) {
-    return event.getAction() == MotionEvent.ACTION_MOVE;
-  }
-
-  private static boolean isActionUp(MotionEvent event) {
-    return event.getAction() == MotionEvent.ACTION_UP;
-  }
-
-  private static boolean isActionCancel(MotionEvent event) {
-    return event.getAction() == MotionEvent.ACTION_CANCEL;
   }
 
 }

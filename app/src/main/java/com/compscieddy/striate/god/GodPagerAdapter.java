@@ -10,10 +10,9 @@ import androidx.fragment.app.FragmentPagerAdapter;
 public class GodPagerAdapter extends FragmentPagerAdapter {
 
   public static final int SETTINGS_POSITION = 0;
-  public static final int HOME_POSITION = 1;
-  public static final int INFINOTE_POSITION = 2;
+  public static final int INFINOTE_POSITION = 1;
 
-  public static final int DEFAULT_GOD_POSITION = HOME_POSITION;
+  public static final int DEFAULT_GOD_POSITION = INFINOTE_POSITION;
 
   private final Context mContext;
 
@@ -28,8 +27,6 @@ public class GodPagerAdapter extends FragmentPagerAdapter {
     switch (position) {
       case SETTINGS_POSITION:
         return new SettingsGodFragment();
-      case HOME_POSITION:
-        return new MainGodFragment();
       case INFINOTE_POSITION:
       default:
         return new InfinoteGodFragment();
@@ -38,6 +35,6 @@ public class GodPagerAdapter extends FragmentPagerAdapter {
 
   @Override
   public int getCount() {
-    return 3;
+    return 2;
   }
 }

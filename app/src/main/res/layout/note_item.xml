@@ -18,14 +18,15 @@
     >
 
     <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
-      android:id="@+id/hashtag_text"
+      android:id="@+id/hashtag_title"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@null"
       android:hint="Hashtag name..."
       android:paddingLeft="6dp"
-      android:textSize="12sp"
+      android:textSize="15sp"
       android:visibility="gone"
+      app:fontface="jost_regular"
       />
 
     <carbon.widget.LinearLayout
@@ -56,7 +57,7 @@
           />
         <View
           android:id="@+id/line_indicator"
-          android:layout_width="2dp"
+          android:layout_width="3dp"
           android:layout_height="match_parent"
           />
       </carbon.widget.FrameLayout>

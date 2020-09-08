@@ -110,24 +110,24 @@ public class NoteHolder extends RecyclerView.ViewHolder {
    * Start from 0 height and grow it to full height.
    */
   private void initHashtag() {
-    binding.hashtagText.setVisibility(View.VISIBLE);
+    binding.hashtagTitle.setVisibility(View.VISIBLE);
 
-    binding.hashtagText.setText(mHashtag.getHashtagName());
-    binding.hashtagText.setSelection(mHashtag.getHashtagName().length());
+    binding.hashtagTitle.setText(mHashtag.getHashtagName());
+    binding.hashtagTitle.setSelection(mHashtag.getHashtagName().length());
     initHashtagTextColor(mNote.getHashtagColor());
 
     initHashtagLineAndHideDot(mNote.getHashtagColor());
 
-    ViewGroup.LayoutParams hashtagParams = binding.hashtagText.getLayoutParams();
+    ViewGroup.LayoutParams hashtagParams = binding.hashtagTitle.getLayoutParams();
     hashtagParams.height = 0;
-    binding.hashtagText.setLayoutParams(hashtagParams);
+    binding.hashtagTitle.setLayoutParams(hashtagParams);
 
     expandHashtagView();
   }
 
   private void initHashtagTextColor(int hashtagColor) {
-    binding.hashtagText.setTextColor(hashtagColor);
-    binding.hashtagText.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
+    binding.hashtagTitle.setTextColor(hashtagColor);
+    binding.hashtagTitle.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
   }
 
   private void initHashtagLineAndHideDot(int color) {
@@ -139,13 +139,13 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
   private void expandHashtagView() {
     // todo: don't hardcode the height to grow to
-    binding.hashtagText.setVisibility(View.VISIBLE);
-    binding.hashtagText.getLayoutParams().height = 0;
+    binding.hashtagTitle.setVisibility(View.VISIBLE);
+    binding.hashtagTitle.getLayoutParams().height = 0;
 
     ViewEtil.animateViewHeight(
-        binding.hashtagText,
+        binding.hashtagTitle,
         res.getDimensionPixelSize(R.dimen.expanded_hashtag_title_height),
-        600);
+        100);
   }
 
   public void highlight(int color) {
@@ -210,20 +210,20 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   private void initHashtagTitleAutocomplete(final List<Note> notes, int hashtagColor) {
     initHashtagTextColor(hashtagColor);
 
-    binding.hashtagText.setAdapter(new ArrayAdapter<String>(
+    binding.hashtagTitle.setAdapter(new ArrayAdapter<>(
         c,
         android.R.layout.simple_dropdown_item_1line,
         getHashtagNameFromHashtagList(mExistingHashtags)));
-    binding.hashtagText.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+    binding.hashtagTitle.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
         | InputType.TYPE_CLASS_TEXT
         | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
-    binding.hashtagText.setImeOptions(EditorInfo.IME_ACTION_DONE);
-    binding.hashtagText.setOnEditorActionListener((v, actionId, event) -> {
+    binding.hashtagTitle.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    binding.hashtagTitle.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
-        VibrationEtil.vibrate(binding.hashtagText);
+        VibrationEtil.vibrate(binding.hashtagTitle);
 
-        String newHashtagText = binding.hashtagText.getText().toString();
+        String newHashtagText = binding.hashtagTitle.getText().toString();
 
         HashtagDragSection hashtagDragSection = new HashtagDragSection(notes, hashtagColor);
         hashtagDragSection.saveOnFirebaseRealtimeDatabase();
@@ -244,8 +244,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
         mNote.setHashtagColor(hashtagColor);
         mNote.saveOnFirebaseRealtimeDatabase();
 
-        binding.hashtagText.clearFocus();
-        KeyboardEtil.hideKeyboard(binding.hashtagText);
+        binding.hashtagTitle.clearFocus();
+        KeyboardEtil.hideKeyboard(binding.hashtagTitle);
 
         return true;
       }

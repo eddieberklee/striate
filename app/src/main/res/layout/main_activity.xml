@@ -50,21 +50,6 @@
         />
     </LinearLayout>
     <LinearLayout
-      android:id="@+id/home_navbar_container"
-      style="@style/NavigationBarItemContainer"
-      >
-      <com.compscieddy.eddie_utils.eui.ColorImageView
-        android:id="@+id/home_god_fragment_icon"
-        style="@style/NavigationBarItemIcon"
-        android:src="@drawable/ic_circle_icon"
-        />
-      <com.compscieddy.eddie_utils.eui.FontTextView
-        android:id="@+id/home_god_fragment_title"
-        style="@style/NavigationBarItemTitle"
-        android:text="@string/circle_navbar_title"
-        />
-    </LinearLayout>
-    <LinearLayout
       android:id="@+id/discover_navbar_container"
       style="@style/NavigationBarItemContainer"
       >
