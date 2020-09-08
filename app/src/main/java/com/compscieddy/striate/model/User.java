@@ -24,7 +24,8 @@ public class User {
   private String mDisplayName;
   private String mPhotoUrl;
 
-  public User() {}
+  public User() {
+  }
 
   public User(FirebaseUser firebaseUser) {
     this(
@@ -66,12 +67,14 @@ public class User {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     db.collection(USER_COLLECTION).document(getEmail()).set(User.this, SetOptions.merge())
         .addOnSuccessListener(aVoid -> onSuccessRunnable.run())
-        .addOnFailureListener(e -> CrashUtil.logAndShowToast("Failed to set the user in AuthenticationActivity e: " + e.toString()));
+        .addOnFailureListener(e -> CrashUtil.logAndShowToast(
+            "Failed to set the user in AuthenticationActivity e: " + e.toString()));
   }
 
   public String getEmail() {
     return mEmail;
   }
+
   public void setEmail(String email) {
     mEmail = email;
   }
@@ -79,6 +82,7 @@ public class User {
   public String getDisplayName() {
     return mDisplayName;
   }
+
   public void setDisplayName(String displayName) {
     mDisplayName = displayName;
   }
@@ -86,6 +90,7 @@ public class User {
   public String getPhotoUrl() {
     return mPhotoUrl;
   }
+
   public void setPhotoUrl(String photoUrl) {
     mPhotoUrl = photoUrl;
   }

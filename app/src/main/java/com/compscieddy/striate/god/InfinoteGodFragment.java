@@ -10,12 +10,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 
 import com.compscieddy.eddie_utils.etil.VibrationEtil;
-import com.compscieddy.striate.HashtagDragSectionManager;
 import com.compscieddy.striate.NoteCategorizer;
 import com.compscieddy.striate.databinding.InfinoteGodFragmentBinding;
 import com.compscieddy.striate.databinding.NoteItemBinding;
 import com.compscieddy.striate.model.Hashtag;
-import com.compscieddy.striate.model.HashtagDragSection;
 import com.compscieddy.striate.model.Note;
 import com.compscieddy.striate.note.NoteHolder;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -33,7 +31,8 @@ import timber.log.Timber;
 
 public class InfinoteGodFragment extends Fragment {
 
-  private FirebaseRecyclerAdapter mNoteFirebaseAdapter = new FirebaseRecyclerAdapter<Note, NoteHolder>(
+  private FirebaseRecyclerAdapter mNoteFirebaseAdapter = new FirebaseRecyclerAdapter<Note,
+      NoteHolder>(
       new FirebaseRecyclerOptions.Builder<Note>()
           .setQuery(Note.getNoteQuery(), Note.class)
           .build()) {
@@ -58,7 +57,6 @@ public class InfinoteGodFragment extends Fragment {
   private Resources res;
   private InfinoteGodFragmentBinding binding;
   private NoteCategorizer mNoteCategorizer;
-  private HashtagDragSectionManager mHashtagDragSectionManager;
 
   @Nullable
   @Override
@@ -70,7 +68,6 @@ public class InfinoteGodFragment extends Fragment {
     res = c.getResources();
 
     initFirebaseRecyclerView();
-    initHashtagDragSections();
     initNewNoteAutocomplete();
     initExistingHashtags();
 
@@ -83,12 +80,14 @@ public class InfinoteGodFragment extends Fragment {
       // returns more quickly than the note view holders are created and laid out.
       Hashtag.getHashtagQuery()
           .addChildEventListener(new ChildEventListener() {
-            @Override public void onChildAdded(
+            @Override
+            public void onChildAdded(
                 @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
               Hashtag hashtagAdded = snapshot.getValue(Hashtag.class);
               for (int i = 0; i < mNoteFirebaseAdapter.getItemCount(); i++) {
-                NoteHolder noteHolder = (NoteHolder) binding.notesRecyclerView.findViewHolderForAdapterPosition(
-                    i);
+                NoteHolder noteHolder =
+                    (NoteHolder) binding.notesRecyclerView.findViewHolderForAdapterPosition(
+                        i);
                 if (noteHolder == null) {
                   Timber.e("Non-breaking but existing hashtags may not all appear");
                   continue;
@@ -97,12 +96,14 @@ public class InfinoteGodFragment extends Fragment {
               }
             }
 
-            @Override public void onChildChanged(
+            @Override
+            public void onChildChanged(
                 @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
               Timber.d("Hashtag query child changed");
             }
 
-            @Override public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
               Hashtag hashtagRemoved = snapshot.getValue(Hashtag.class);
               for (int i = 0; i < mNoteFirebaseAdapter.getItemCount(); i++) {
                 NoteHolder noteHolder = (NoteHolder) mNoteFirebaseAdapter.getItem(i);
@@ -110,48 +111,18 @@ public class InfinoteGodFragment extends Fragment {
               }
             }
 
-            @Override public void onChildMoved(
+            @Override
+            public void onChildMoved(
                 @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
               Timber.d("Hashtag query child moved");
             }
 
-            @Override public void onCancelled(@NonNull DatabaseError error) {
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
               Timber.d("Hashtag query cancelled");
             }
           });
     }, 500);
-  }
-
-  /**
-   * These determine the colored lines on the side of the notes and the hashtag categorization title.
-   */
-  private void initHashtagDragSections() {
-    mHashtagDragSectionManager = new HashtagDragSectionManager(mNoteFirebaseAdapter);
-    HashtagDragSection.getHashtagDragSection()
-        .addChildEventListener(new ChildEventListener() {
-          @Override public void onChildAdded(
-              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            mHashtagDragSectionManager.addHashtagDragSection(snapshot.getValue(HashtagDragSection.class));
-          }
-
-          @Override public void onChildChanged(
-              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-          }
-
-          @Override public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-          }
-
-          @Override public void onChildMoved(
-              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-          }
-
-          @Override public void onCancelled(@NonNull DatabaseError error) {
-
-          }
-        });
   }
 
   private void initNewNoteAutocomplete() {
@@ -165,6 +136,12 @@ public class InfinoteGodFragment extends Fragment {
         VibrationEtil.vibrate(binding.newNoteAutocomplete);
 
         saveNewNote(binding.newNoteAutocomplete.getText().toString());
+
+        binding.notesRecyclerView.postDelayed(() -> {
+          // post delayed is to give time for the notes recycler view to add the new item
+          // todo: explore scrolling to the newest note being added
+          binding.notesRecyclerView.scrollToPosition(0);
+        }, 400);
 
         binding.newNoteAutocomplete.setText("");
 

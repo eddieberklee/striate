@@ -7,10 +7,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.firestore.Exclude;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Exclude;
 
 import java.util.Calendar;
 import java.util.List;
@@ -24,24 +27,28 @@ import timber.log.Timber;
 @SuppressWarnings("ALL")
 public class Note {
 
+  public interface NoteFirebaseCallback {
+    void onNoteLoaded(Note note);
+  }
+
   public static final String FIELD_ID = "id";
   public static final String FIELD_USER_EMAIL = "userEmail";
   public static final String FIELD_CREATED_AT_MILLIS = "createdAtMillis";
   public static final String FIELD_NOTE_TEXT = "noteText";
   public static final String FIELD_HASHTAG_ID = "hashtagId";
-
+  public static final String FIELD_HASHTAG_NAME = "hashtagName";
+  public static final String FIELD_HASHTAG_COLOR = "hashtagColor";
+  public static final String FIELD_HASHTAG_SECTION_NOTE_IDS = "hashtagSectionNoteIds";
   private static final String NOTE_COLLECTION = "note";
 
   private String mId;
   private String mUserEmail;
   private long mCreatedAtMillis;
   private String mNoteText;
-
   private String mHashtagId;
   private String mHashtagName;
   private @ColorInt int mHashtagColor;
-  private List<Note> mHashtagSectionNotes;
-  private String mHashtagSectionId;
+  private List<String> mHashtagSectionNoteIds;
 
   public Note() {
     // for firebase
@@ -70,6 +77,45 @@ public class Note {
   public static Query getNoteQuery() {
     return getNoteReference()
         .orderByPriority();
+  }
+
+  @Exclude
+  private static void getNote(String noteId, NoteFirebaseCallback noteFirebaseCallback) {
+    getNoteReference()
+        .child(noteId)
+        .addListenerForSingleValueEvent(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            Timber.d("Getting single value event for note id %s", noteId);
+            noteFirebaseCallback.onNoteLoaded(snapshot.getValue(Note.class));
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+            Timber.d(
+                "Cancelled error while getting single value event for note id %s error %s",
+                noteId,
+                error.toString());
+          }
+        });
+  }
+
+  private static void removeNoteIdFromOtherNotes(
+      String removedNoteId,
+      List<String> hashtagNoteIds) {
+    for (String noteId : hashtagNoteIds) {
+      if (TextUtils.equals(noteId, removedNoteId)) {
+        continue;
+      }
+
+      Note.getNote(noteId, (Note note) -> {
+        List<String> hashtagSectionNoteIds = note.getHashtagSectionNoteIds();
+        hashtagSectionNoteIds.remove(removedNoteId);
+        note.saveFieldOnFirebaseRealtimeDatabase(
+            Note.FIELD_HASHTAG_SECTION_NOTE_IDS,
+            hashtagSectionNoteIds);
+      });
+    }
   }
 
   @Exclude
@@ -128,6 +174,10 @@ public class Note {
 
   @Exclude
   public void deleteOnFirebase() {
+    removeFromHashtagSection();
+
+    // todo: removing hashtag if this note is the last note of that hashtag
+
     getNoteReference()
         .child(getId())
         .removeValue()
@@ -172,6 +222,43 @@ public class Note {
   @Exclude
   public boolean hasHashtag() {
     return !TextUtils.isEmpty(getHashtagId());
+  }
+
+  @Exclude
+  public void saveOnFirebaseRealtimeDatabase() {
+    getNoteReference()
+        .child(getId())
+        .setValue(Note.this, getPriority())
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+            Timber.d("Successfully saved note with text: %s", getNoteText());
+          }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            CrashUtil.log("Failed to save entry with id: " + getId());
+          }
+        });
+  }
+
+  /**
+   * Handles clearing this note's hashtag-related fields.
+   * Queries other notes in hashtag section to delete this note's id from them.
+   */
+  @Exclude
+  public void removeFromHashtagSection() {
+    setHashtagColor(-1);
+    setHashtagId(null);
+    setHashtagName(null);
+
+    List<String> hashtagNoteIds = getHashtagSectionNoteIds();
+    if (hashtagNoteIds != null) {
+      removeNoteIdFromOtherNotes(getId(), hashtagNoteIds);
+    }
+
+    saveOnFirebaseRealtimeDatabase();
   }
 
   /**
@@ -234,58 +321,11 @@ public class Note {
     mHashtagColor = hashtagColor;
   }
 
-  public List<Note> getHashtagSectionNotes() {
-    return mHashtagSectionNotes;
+  public List<String> getHashtagSectionNoteIds() {
+    return mHashtagSectionNoteIds;
   }
 
-  public void setHashtagSectionNotes(List<Note> hashtagSectionNotes) {
-    mHashtagSectionNotes = hashtagSectionNotes;
-  }
-
-  public String getHashtagSectionId() {
-    return mHashtagSectionId;
-  }
-
-  public void setHashtagSectionId(String hashtagSectionId) {
-    mHashtagSectionId = hashtagSectionId;
-  }
-
-  public void saveOnFirebaseRealtimeDatabase() {
-    getNoteReference()
-        .child(getId())
-        .setValue(Note.this, getPriority())
-        .addOnSuccessListener(new OnSuccessListener<Void>() {
-          @Override
-          public void onSuccess(Void aVoid) {
-            Timber.d("Successfully saved note with text: %s", getNoteText());
-          }
-        })
-        .addOnFailureListener(new OnFailureListener() {
-          @Override
-          public void onFailure(@NonNull Exception e) {
-            CrashUtil.log("Failed to save entry with id: " + getId());
-          }
-        });
-  }
-
-  @Exclude
-  public void removeHashtagAsLabel() {
-    setHashtagColor(-1);
-    setHashtagId(null);
-    setHashtagName(null);
-
-    List<Note> hashtagNotes = getHashtagSectionNotes();
-    for (Note note : hashtagNotes) {
-      if (TextUtils.equals(note.getId(), getId())) {
-        continue;
-      }
-
-      List<Note> hashtagSectionNotes = note.getHashtagSectionNotes();
-      hashtagSectionNotes.remove(note);
-      note.setHashtagSectionNotes(hashtagSectionNotes);
-      note.saveOnFirebaseRealtimeDatabase();
-    }
-
-    saveOnFirebaseRealtimeDatabase();
+  public void setHashtagSectionNoteIds(List<String> hashtagSectionNoteIds) {
+    mHashtagSectionNoteIds = hashtagSectionNoteIds;
   }
 }

@@ -11,7 +11,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.Exclude;
+import com.google.firebase.database.Exclude;
 
 import androidx.annotation.NonNull;
 import timber.log.Timber;

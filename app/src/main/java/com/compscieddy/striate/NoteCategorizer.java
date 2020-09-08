@@ -25,6 +25,7 @@ public class NoteCategorizer {
   private final Resources res;
   List<NoteHolder> mHighlightedNoteHolders = new ArrayList<>();
   private InfinoteGodFragmentBinding binding;
+  private AlertDialog mRemoveHashtagDialog;
   View.OnTouchListener mTouchListener = new View.OnTouchListener() {
 
     private float mStartX = -1;
@@ -62,7 +63,7 @@ public class NoteCategorizer {
       }
 
       if (isActionMove(event)) {
-        handleActionMove(noteView, noteHolder, mRandomColor);
+        handleActionMove(noteView, noteHolder);
       } else if (isActionUp(event)) { // UP
         handleActionUp();
         return false;
@@ -75,8 +76,14 @@ public class NoteCategorizer {
       return true;
     }
 
-    private void handleActionMove(View noteView, NoteHolder noteHolder, int randomColor) {
+    private void handleActionMove(View noteView, NoteHolder noteHolder) {
       if (noteHolder.isPartOfExistingHashtagSection()) {
+        Timber.d("Note is part of existing hashtag section");
+        if (mRemoveHashtagDialog != null && mRemoveHashtagDialog.isShowing()) {
+          Timber.d("1 Returning early cause dialog already showing");
+          return;
+        }
+        Timber.d("2 Showing remove hashtag confirmation dialog");
         // show confirmation dialog
         AlertDialog.Builder removeHashtagConfirmationDialogBuilder =
             DialogEtil.getCustomDialogBuilder(
@@ -86,23 +93,23 @@ public class NoteCategorizer {
         removeHashtagConfirmationDialogBuilder
             .setPositiveButton("Remove", (dialog, which) -> {
               // if yes, delete on firebase realtime database
-              noteHolder.getNote().removeHashtagAsLabel();
+              noteHolder.getNote().removeFromHashtagSection();
               cancelHighlightingAndClear();
               dialog.dismiss();
             })
             .setNegativeButton("Cancel", (dialog, which) -> {
               // if no, then highlight back
-              noteHolder.restoreHighlight(randomColor);
+              noteHolder.restoreHighlight();
               dialog.dismiss();
             });
 
-        AlertDialog removeHashtagDialog = removeHashtagConfirmationDialogBuilder.create();
-        removeHashtagDialog.show();
+        mRemoveHashtagDialog = removeHashtagConfirmationDialogBuilder.create();
+        mRemoveHashtagDialog.show();
 
-        removeHashtagDialog
+        mRemoveHashtagDialog
             .getButton(AlertDialog.BUTTON_POSITIVE)
             .setTextColor(res.getColor(R.color.confirm_remove_hashtag_red));
-        removeHashtagDialog
+        mRemoveHashtagDialog
             .getButton(AlertDialog.BUTTON_NEGATIVE)
             .setTextColor(res.getColor(R.color.black_t20));
 

@@ -5,7 +5,6 @@ import android.content.res.Resources;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 
@@ -17,7 +16,6 @@ import com.compscieddy.eddie_utils.etil.ViewEtil;
 import com.compscieddy.striate.R;
 import com.compscieddy.striate.databinding.NoteItemBinding;
 import com.compscieddy.striate.model.Hashtag;
-import com.compscieddy.striate.model.HashtagDragSection;
 import com.compscieddy.striate.model.Note;
 
 import java.util.ArrayList;
@@ -88,6 +86,9 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   private void initNoHashtag() {
+    binding.hashtagName.setText("");
+    binding.hashtagName.setVisibility(View.GONE);
+
     binding.lineIndicator.setVisibility(View.GONE);
     binding.dotControl.setVisibility(View.VISIBLE);
 
@@ -109,31 +110,32 @@ public class NoteHolder extends RecyclerView.ViewHolder {
    * Start from 0 height and grow it to full height.
    */
   private void initHashtag() {
-    boolean isFirstInSection = mNote.getHashtagSectionNotes() != null
-        && mNote.getHashtagSectionNotes().size() > 0
-        && TextUtils.equals(mNote.getHashtagSectionNotes().get(0).getId(), mNote.getId());
-    if (!isFirstInSection) {
+    if (TextUtils.isEmpty(mNote.getHashtagName())) {
       return;
     }
 
-    binding.hashtagTitle.setVisibility(View.VISIBLE);
+    boolean isFirstInSection = mNote.getHashtagSectionNoteIds() != null
+        && mNote.getHashtagSectionNoteIds().size() > 0
+        && TextUtils.equals(mNote.getHashtagSectionNoteIds().get(0), mNote.getId());
+    boolean shouldShowHashtagName = isFirstInSection;
 
-    binding.hashtagTitle.setText(mHashtag.getHashtagName());
-    binding.hashtagTitle.setSelection(mHashtag.getHashtagName().length());
-    initHashtagTextColor(mNote.getHashtagColor());
-
+    // always show the line if available
     initHashtagLineAndHideDot(mNote.getHashtagColor());
 
-    ViewGroup.LayoutParams hashtagParams = binding.hashtagTitle.getLayoutParams();
-    hashtagParams.height = 0;
-    binding.hashtagTitle.setLayoutParams(hashtagParams);
+    // only show the name if the first in hashtag section
+    if (shouldShowHashtagName) {
+      binding.hashtagName.setVisibility(View.VISIBLE);
+      binding.hashtagName.setText(mNote.getHashtagName());
+      binding.hashtagName.setSelection(mNote.getHashtagName().length());
+      initHashtagTextColor(mNote.getHashtagColor());
 
-    expandHashtagView();
+      expandHashtagView();
+    }
   }
 
   private void initHashtagTextColor(int hashtagColor) {
-    binding.hashtagTitle.setTextColor(hashtagColor);
-    binding.hashtagTitle.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
+    binding.hashtagName.setTextColor(hashtagColor);
+    binding.hashtagName.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
   }
 
   private void initHashtagLineAndHideDot(int color) {
@@ -145,11 +147,11 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
   private void expandHashtagView() {
     // todo: don't hardcode the height to grow to
-    binding.hashtagTitle.setVisibility(View.VISIBLE);
-    binding.hashtagTitle.getLayoutParams().height = 0;
+    binding.hashtagName.setVisibility(View.VISIBLE);
+    binding.hashtagName.getLayoutParams().height = 0;
 
     ViewEtil.animateViewHeight(
-        binding.hashtagTitle,
+        binding.hashtagName,
         res.getDimensionPixelSize(R.dimen.expanded_hashtag_title_height),
         100);
   }
@@ -210,59 +212,74 @@ public class NoteHolder extends RecyclerView.ViewHolder {
    */
   public void initHashtagDragSectionEditor(List<Note> notes, int hashtagColor) {
     expandHashtagView();
-
     initHashtagTitleAutocomplete(notes, hashtagColor);
+
+    binding.hashtagName.requestFocus();
+    KeyboardEtil.showKeyboard(c);
   }
 
   private void initHashtagTitleAutocomplete(final List<Note> notes, int hashtagColor) {
     initHashtagTextColor(hashtagColor);
 
-    binding.hashtagTitle.setAdapter(new ArrayAdapter<>(
+    binding.hashtagName.setAdapter(new ArrayAdapter<>(
         c,
         android.R.layout.simple_dropdown_item_1line,
         getHashtagNameFromHashtagList(mExistingHashtags)));
-    binding.hashtagTitle.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+    binding.hashtagName.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
         | InputType.TYPE_CLASS_TEXT
         | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
-    binding.hashtagTitle.setImeOptions(EditorInfo.IME_ACTION_DONE);
-    binding.hashtagTitle.setOnEditorActionListener((v, actionId, event) -> {
+    binding.hashtagName.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    binding.hashtagName.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
-        VibrationEtil.vibrate(binding.hashtagTitle);
-
-        String newHashtagText = binding.hashtagTitle.getText().toString();
-
-        HashtagDragSection hashtagDragSection = new HashtagDragSection(notes, hashtagColor);
-        hashtagDragSection.saveOnFirebaseRealtimeDatabase();
-
-        @Nullable Hashtag existingHashtag = findHashtagWithText(newHashtagText);
-        boolean isNewHashtagUnique = existingHashtag == null;
-        String newHashtagId;
-        if (isNewHashtagUnique) {
-          Hashtag hashtag = new Hashtag(newHashtagText);
-          newHashtagId = hashtag.getId();
-          hashtag.saveOnFirebaseRealtimeDatabase();
-        } else {
-          newHashtagId = existingHashtag.getId();
+        VibrationEtil.vibrate(binding.hashtagName);
+        for (Note note : notes) {
+          updateNoteWithHashtagInfo(note, hashtagColor, notes);
         }
-
-        mNote.setHashtagId(newHashtagId);
-        mNote.setHashtagName(newHashtagText);
-        mNote.setHashtagColor(hashtagColor);
-        mNote.setHashtagSectionId(hashtagDragSection.getId());
-
-        // todo: this line below will crash the app when saving
-//        mNote.setHashtagSectionNotes(notes);
-
-        mNote.saveOnFirebaseRealtimeDatabase();
-
-        binding.hashtagTitle.clearFocus();
-        KeyboardEtil.hideKeyboard(binding.hashtagTitle);
-
+        clearFocusAndHideKeyboard();
         return true;
       }
       return false;
     });
+  }
+
+  private void clearFocusAndHideKeyboard() {
+    binding.hashtagName.clearFocus();
+    KeyboardEtil.hideKeyboard(binding.hashtagName);
+  }
+
+  private void updateNoteWithHashtagInfo(
+      Note note,
+      int hashtagColor,
+      List<Note> notes) {
+    String newHashtagText = binding.hashtagName.getText().toString();
+    String hashtagId = getExistingOrCreateNewHashtag(newHashtagText);
+
+    note.setHashtagId(hashtagId);
+    note.setHashtagName(newHashtagText);
+    note.setHashtagColor(hashtagColor);
+    note.setHashtagSectionNoteIds(getNoteIdsForNotes(notes));
+    note.saveOnFirebaseRealtimeDatabase();
+  }
+
+  private List<String> getNoteIdsForNotes(List<Note> notes) {
+    List<String> noteIds = new ArrayList<>();
+    for (Note note : notes) {
+      noteIds.add(note.getId());
+    }
+    return noteIds;
+  }
+
+  private String getExistingOrCreateNewHashtag(String newHashtagText) {
+    @Nullable Hashtag existingHashtag = findHashtagWithText(newHashtagText);
+
+    if (existingHashtag != null) {
+      return existingHashtag.getId();
+    } else {
+      Hashtag hashtag = new Hashtag(newHashtagText);
+      hashtag.saveOnFirebaseRealtimeDatabase();
+      return hashtag.getId();
+    }
   }
 
   private @Nullable
@@ -292,7 +309,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     return !TextUtils.isEmpty(mNote.getHashtagId());
   }
 
-  public void restoreHighlight(int color) {
-    highlight(color);
+  public void restoreHighlight() {
+    initHashtagLineAndHideDot(mNote.getHashtagColor());
   }
 }

@@ -18,7 +18,7 @@
     >
 
     <com.compscieddy.eddie_utils.eui.FontAutoCompleteTextView
-      android:id="@+id/hashtag_title"
+      android:id="@+id/hashtag_name"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@null"
