@@ -80,14 +80,18 @@ public class Note {
   }
 
   @Exclude
-  private static void getNote(String noteId, NoteFirebaseCallback noteFirebaseCallback) {
+  public static void fetchNote(String noteId, NoteFirebaseCallback noteFirebaseCallback) {
     getNoteReference()
         .child(noteId)
         .addListenerForSingleValueEvent(new ValueEventListener() {
           @Override
           public void onDataChange(@NonNull DataSnapshot snapshot) {
             Timber.d("Getting single value event for note id %s", noteId);
-            noteFirebaseCallback.onNoteLoaded(snapshot.getValue(Note.class));
+            Note note = snapshot.getValue(Note.class);
+            if (note != null) {
+              // this could be null if it was just deleted
+              noteFirebaseCallback.onNoteLoaded(note);
+            }
           }
 
           @Override
@@ -108,7 +112,7 @@ public class Note {
         continue;
       }
 
-      Note.getNote(noteId, (Note note) -> {
+      Note.fetchNote(noteId, (Note note) -> {
         List<String> hashtagSectionNoteIds = note.getHashtagSectionNoteIds();
         hashtagSectionNoteIds.remove(removedNoteId);
         note.saveFieldOnFirebaseRealtimeDatabase(

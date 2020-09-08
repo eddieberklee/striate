@@ -21,6 +21,7 @@ import timber.log.Timber;
 
 public class NoteCategorizer {
 
+  private static final boolean DEBUG = false;
   private final Context c;
   private final Resources res;
   List<NoteHolder> mHighlightedNoteHolders = new ArrayList<>();
@@ -33,11 +34,11 @@ public class NoteCategorizer {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-      Timber.d("categorizer action " + getActionString(event));
+      if (DEBUG) Timber.d("categorizer action " + getActionString(event));
 
       @Nullable View noteView = getNoteViewForY(event.getY());
       if (noteView == null) {
-        Timber.d("categorizer note view is null");
+        if (DEBUG) Timber.d("categorizer note view is null");
         return false;
       }
 
@@ -46,19 +47,20 @@ public class NoteCategorizer {
       NoteHolder noteHolder = getNoteHolderForNoteView(noteView);
 
       if (mStartX == -1) {
-        Timber.d("categorizer Resetting mStartX");
+        if (DEBUG) Timber.d("categorizer Resetting mStartX");
         mStartX = event.getX();
         mRandomColor = getRandomColor();
       }
 
-      Timber.d("categorizer start x %s note text x %s", mStartX, noteHolder.getNoteTextViewX());
+      if (DEBUG)
+        Timber.d("categorizer start x %s note text x %s", mStartX, noteHolder.getNoteTextViewX());
 
       if (isActionUp(event) || isActionCancel(event)) {
         mStartX = -1;
       }
 
       if (mStartX > noteHolder.getNoteTextViewX()) {
-        Timber.d("categorizer returning false because x is too far right");
+        if (DEBUG) Timber.d("categorizer returning false because x is too far right");
         return false;
       }
 
@@ -72,7 +74,6 @@ public class NoteCategorizer {
         return false;
       }
 
-      // false so we still allow parent views to handle their own touches
       return true;
     }
 
@@ -140,8 +141,8 @@ public class NoteCategorizer {
               .getCreatedAtMillis()));
 
       NoteHolder firstNoteHolder = mHighlightedNoteHolders.get(0);
-      firstNoteHolder.initHashtagDragSectionEditor(
-          getNotesFromNoteHolders(mHighlightedNoteHolders),
+      firstNoteHolder.initHashtagName(
+          NoteHolder.getNoteIdsForNotes(getNotesFromNoteHolders(mHighlightedNoteHolders)),
           mRandomColor);
 
       mHighlightedNoteHolders.clear();

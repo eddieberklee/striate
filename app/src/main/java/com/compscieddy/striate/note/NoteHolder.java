@@ -15,11 +15,14 @@ import com.compscieddy.eddie_utils.etil.VibrationEtil;
 import com.compscieddy.eddie_utils.etil.ViewEtil;
 import com.compscieddy.striate.R;
 import com.compscieddy.striate.databinding.NoteItemBinding;
+import com.compscieddy.striate.god.InfinoteGodFragment;
 import com.compscieddy.striate.model.Hashtag;
 import com.compscieddy.striate.model.Note;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -33,14 +36,25 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   private NoteItemBinding binding;
 
   private Note mNote;
+  private InfinoteGodFragment.ExistingHashtagsCallback mExistingHashtagsCallback;
   private Hashtag mHashtag;
-  private List<Hashtag> mExistingHashtags = new ArrayList<>();
 
   public NoteHolder(NoteItemBinding binding) {
     super(binding.getRoot());
     c = binding.getRoot().getContext();
     this.binding = binding;
     res = c.getResources();
+  }
+
+  /**
+   * todo: turn into util helper method
+   */
+  public static List<String> getNoteIdsForNotes(List<Note> notes) {
+    List<String> noteIds = new ArrayList<>();
+    for (Note note : notes) {
+      noteIds.add(note.getId());
+    }
+    return noteIds;
   }
 
   private void initNoteAutoComplete() {
@@ -124,12 +138,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
     // only show the name if the first in hashtag section
     if (shouldShowHashtagName) {
-      binding.hashtagName.setVisibility(View.VISIBLE);
-      binding.hashtagName.setText(mNote.getHashtagName());
-      binding.hashtagName.setSelection(mNote.getHashtagName().length());
-      initHashtagTextColor(mNote.getHashtagColor());
-
-      expandHashtagView();
+      initHashtagName(mNote.getHashtagSectionNoteIds(), mNote.getHashtagColor());
     }
   }
 
@@ -197,8 +206,9 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     return mNote;
   }
 
-  public void setNote(Note note) {
+  public void setNote(Note note, InfinoteGodFragment.ExistingHashtagsCallback hashtagCallback) {
     mNote = note;
+    mExistingHashtagsCallback = hashtagCallback;
 
     initNoteAutoComplete();
     maybeFetchHashtag();
@@ -210,21 +220,25 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   /**
    * Init hashtag editor on first note.
    */
-  public void initHashtagDragSectionEditor(List<Note> notes, int hashtagColor) {
+  public void initHashtagName(List<String> noteIds, int hashtagColor) {
     expandHashtagView();
-    initHashtagTitleAutocomplete(notes, hashtagColor);
+
+    if (!TextUtils.isEmpty(mNote.getHashtagName()))
+      binding.hashtagName.setText(mNote.getHashtagName());
+    initHashtagNameAutocomplete(noteIds, hashtagColor);
 
     binding.hashtagName.requestFocus();
     KeyboardEtil.showKeyboard(c);
-  }
-
-  private void initHashtagTitleAutocomplete(final List<Note> notes, int hashtagColor) {
-    initHashtagTextColor(hashtagColor);
 
     binding.hashtagName.setAdapter(new ArrayAdapter<>(
         c,
-        android.R.layout.simple_dropdown_item_1line,
-        getHashtagNameFromHashtagList(mExistingHashtags)));
+        R.layout.simple_thin_dropdown,
+        getUniqueHashtagNamesFromHashtagList(mExistingHashtagsCallback.getExistingHashtags())));
+  }
+
+  private void initHashtagNameAutocomplete(final List<String> noteIds, int hashtagColor) {
+    initHashtagTextColor(hashtagColor);
+
     binding.hashtagName.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
         | InputType.TYPE_CLASS_TEXT
         | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
@@ -233,8 +247,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.hashtagName.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         VibrationEtil.vibrate(binding.hashtagName);
-        for (Note note : notes) {
-          updateNoteWithHashtagInfo(note, hashtagColor, notes);
+        for (String noteId : noteIds) {
+          updateNoteWithHashtagInfo(noteId, hashtagColor, noteIds);
         }
         clearFocusAndHideKeyboard();
         return true;
@@ -249,25 +263,19 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   private void updateNoteWithHashtagInfo(
-      Note note,
+      String noteId,
       int hashtagColor,
-      List<Note> notes) {
+      List<String> noteIds) {
     String newHashtagText = binding.hashtagName.getText().toString();
     String hashtagId = getExistingOrCreateNewHashtag(newHashtagText);
 
-    note.setHashtagId(hashtagId);
-    note.setHashtagName(newHashtagText);
-    note.setHashtagColor(hashtagColor);
-    note.setHashtagSectionNoteIds(getNoteIdsForNotes(notes));
-    note.saveOnFirebaseRealtimeDatabase();
-  }
-
-  private List<String> getNoteIdsForNotes(List<Note> notes) {
-    List<String> noteIds = new ArrayList<>();
-    for (Note note : notes) {
-      noteIds.add(note.getId());
-    }
-    return noteIds;
+    Note.fetchNote(noteId, note -> {
+      note.setHashtagId(hashtagId);
+      note.setHashtagName(newHashtagText);
+      note.setHashtagColor(hashtagColor);
+      note.setHashtagSectionNoteIds(noteIds);
+      note.saveOnFirebaseRealtimeDatabase();
+    });
   }
 
   private String getExistingOrCreateNewHashtag(String newHashtagText) {
@@ -285,7 +293,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   private @Nullable
   Hashtag findHashtagWithText(String newHashtagText) {
     // optimization: create a hashmap instead <HashtagText -> Hashtag>
-    for (Hashtag hashtag : mExistingHashtags) {
+    for (Hashtag hashtag : mExistingHashtagsCallback.getExistingHashtags()) {
       if (TextUtils.equals(hashtag.getHashtagName(), newHashtagText)) {
         return hashtag;
       }
@@ -293,16 +301,16 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     return null;
   }
 
-  private List<String> getHashtagNameFromHashtagList(List<Hashtag> existingHashtags) {
-    List<String> hashtagNames = new ArrayList<>();
+  private List<String> getUniqueHashtagNamesFromHashtagList(List<Hashtag> existingHashtags) {
+    Set<String> hashtagNames = new HashSet<>();
     for (Hashtag hashtag : existingHashtags) {
+      if (hashtag == null || TextUtils.isEmpty(hashtag.getHashtagName())) {
+        continue;
+      }
       hashtagNames.add(hashtag.getHashtagName());
     }
-    return hashtagNames;
-  }
 
-  public List<Hashtag> getExistingHashtags() {
-    return mExistingHashtags;
+    return new ArrayList<>(hashtagNames);
   }
 
   public boolean isPartOfExistingHashtagSection() {

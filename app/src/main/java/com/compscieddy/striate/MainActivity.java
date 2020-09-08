@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.compscieddy.eddie_utils.etil.KeyboardEtil;
 import com.compscieddy.eddie_utils.etil.NotificationEtil;
 import com.compscieddy.eddie_utils.etil.OnboardingEtil;
 import com.compscieddy.eddie_utils.eui.ColorImageView;
@@ -180,6 +181,15 @@ public class MainActivity extends BaseActivity {
     mGodViewPager.setAdapter(new GodPagerAdapter(MainActivity.this, getSupportFragmentManager()));
     mGodViewPager.setCurrentItem(INFINOTE_POSITION);
     setGodFragmentButtonsUnselected();
+    new KeyboardEtil().addKeyboardStateListener(
+        binding.getRoot(),
+        new KeyboardEtil.KeyboardStateListener() {
+          @Override
+          public void onKeyboardChanged(boolean isKeyboardShowing) {
+            binding.godFragmentsButtonRow.setVisibility(
+                isKeyboardShowing ? View.GONE : View.VISIBLE);
+          }
+        });
   }
 
   private void attachListeners() {

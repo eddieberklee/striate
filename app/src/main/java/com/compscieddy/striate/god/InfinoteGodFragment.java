@@ -22,6 +22,9 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -30,6 +33,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
 public class InfinoteGodFragment extends Fragment {
+
+  public interface ExistingHashtagsCallback {
+    public List<Hashtag> getExistingHashtags();
+  }
+
+  private Context c;
+  private Resources res;
+  private InfinoteGodFragmentBinding binding;
+  private NoteCategorizer mNoteCategorizer;
+  private List<Hashtag> mExistingHashtags = new ArrayList<>();
 
   private FirebaseRecyclerAdapter mNoteFirebaseAdapter = new FirebaseRecyclerAdapter<Note,
       NoteHolder>(
@@ -49,14 +62,9 @@ public class InfinoteGodFragment extends Fragment {
         @NonNull NoteHolder holder,
         int position,
         @NonNull Note note) {
-      holder.setNote(note);
+      holder.setNote(note, () -> mExistingHashtags);
     }
   };
-
-  private Context c;
-  private Resources res;
-  private InfinoteGodFragmentBinding binding;
-  private NoteCategorizer mNoteCategorizer;
 
   @Nullable
   @Override
@@ -75,54 +83,40 @@ public class InfinoteGodFragment extends Fragment {
   }
 
   private void initExistingHashtags() {
-    binding.notesRecyclerView.postDelayed(() -> {
-      // This post delayed is a hack to make sure we have valid view holders if this hashtag query
-      // returns more quickly than the note view holders are created and laid out.
-      Hashtag.getHashtagQuery()
-          .addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(
-                @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-              Hashtag hashtagAdded = snapshot.getValue(Hashtag.class);
-              for (int i = 0; i < mNoteFirebaseAdapter.getItemCount(); i++) {
-                NoteHolder noteHolder =
-                    (NoteHolder) binding.notesRecyclerView.findViewHolderForAdapterPosition(
-                        i);
-                if (noteHolder == null) {
-                  Timber.e("Non-breaking but existing hashtags may not all appear");
-                  continue;
-                }
-                noteHolder.getExistingHashtags().add(hashtagAdded);
-              }
-            }
+    // This post delayed is a hack to make sure we have valid view holders if this hashtag query
+    // returns more quickly than the note view holders are created and laid out.
+    Hashtag.getHashtagQuery()
+        .addChildEventListener(new ChildEventListener() {
+          @Override
+          public void onChildAdded(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            Hashtag hashtagAdded = snapshot.getValue(Hashtag.class);
+            mExistingHashtags.add(hashtagAdded);
+          }
 
-            @Override
-            public void onChildChanged(
-                @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-              Timber.d("Hashtag query child changed");
-            }
+          @Override
+          public void onChildChanged(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            Timber.d("Hashtag query child changed");
+          }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-              Hashtag hashtagRemoved = snapshot.getValue(Hashtag.class);
-              for (int i = 0; i < mNoteFirebaseAdapter.getItemCount(); i++) {
-                NoteHolder noteHolder = (NoteHolder) mNoteFirebaseAdapter.getItem(i);
-                noteHolder.getExistingHashtags().remove(hashtagRemoved.getHashtagName());
-              }
-            }
+          @Override
+          public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            Hashtag hashtagRemoved = snapshot.getValue(Hashtag.class);
+            mExistingHashtags.remove(hashtagRemoved);
+          }
 
-            @Override
-            public void onChildMoved(
-                @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-              Timber.d("Hashtag query child moved");
-            }
+          @Override
+          public void onChildMoved(
+              @NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            Timber.d("Hashtag query child moved");
+          }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-              Timber.d("Hashtag query cancelled");
-            }
-          });
-    }, 500);
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+            Timber.d("Hashtag query cancelled");
+          }
+        });
   }
 
   private void initNewNoteAutocomplete() {
