@@ -98,7 +98,6 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     Hashtag.getHashtag(mNote.getHashtagId(), hashtag -> {
       mHashtag = hashtag;
       if (mHashtag != null) {
-        initHashtag();
       }
     });
   }
@@ -110,6 +109,13 @@ public class NoteHolder extends RecyclerView.ViewHolder {
    * Start from 0 height and grow it to full height.
    */
   private void initHashtag() {
+    boolean isFirstInSection = mNote.getHashtagSectionNotes() != null
+        && mNote.getHashtagSectionNotes().size() > 0
+        && TextUtils.equals(mNote.getHashtagSectionNotes().get(0).getId(), mNote.getId());
+    if (!isFirstInSection) {
+      return;
+    }
+
     binding.hashtagTitle.setVisibility(View.VISIBLE);
 
     binding.hashtagTitle.setText(mHashtag.getHashtagName());
@@ -194,6 +200,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
     initNoteAutoComplete();
     maybeFetchHashtag();
+    initHashtag();
 
     binding.noteTextAutocomplete.setText(note.getNoteText());
   }
@@ -242,6 +249,11 @@ public class NoteHolder extends RecyclerView.ViewHolder {
         mNote.setHashtagId(newHashtagId);
         mNote.setHashtagName(newHashtagText);
         mNote.setHashtagColor(hashtagColor);
+        mNote.setHashtagSectionId(hashtagDragSection.getId());
+
+        // todo: this line below will crash the app when saving
+//        mNote.setHashtagSectionNotes(notes);
+
         mNote.saveOnFirebaseRealtimeDatabase();
 
         binding.hashtagTitle.clearFocus();

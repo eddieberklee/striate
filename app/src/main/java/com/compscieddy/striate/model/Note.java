@@ -41,6 +41,7 @@ public class Note {
   private String mHashtagName;
   private @ColorInt int mHashtagColor;
   private List<Note> mHashtagSectionNotes;
+  private String mHashtagSectionId;
 
   public Note() {
     // for firebase
@@ -233,6 +234,22 @@ public class Note {
     mHashtagColor = hashtagColor;
   }
 
+  public List<Note> getHashtagSectionNotes() {
+    return mHashtagSectionNotes;
+  }
+
+  public void setHashtagSectionNotes(List<Note> hashtagSectionNotes) {
+    mHashtagSectionNotes = hashtagSectionNotes;
+  }
+
+  public String getHashtagSectionId() {
+    return mHashtagSectionId;
+  }
+
+  public void setHashtagSectionId(String hashtagSectionId) {
+    mHashtagSectionId = hashtagSectionId;
+  }
+
   public void saveOnFirebaseRealtimeDatabase() {
     getNoteReference()
         .child(getId())
@@ -256,6 +273,18 @@ public class Note {
     setHashtagColor(-1);
     setHashtagId(null);
     setHashtagName(null);
+
+    List<Note> hashtagNotes = getHashtagSectionNotes();
+    for (Note note : hashtagNotes) {
+      if (TextUtils.equals(note.getId(), getId())) {
+        continue;
+      }
+
+      List<Note> hashtagSectionNotes = note.getHashtagSectionNotes();
+      hashtagSectionNotes.remove(note);
+      note.setHashtagSectionNotes(hashtagSectionNotes);
+      note.saveOnFirebaseRealtimeDatabase();
+    }
 
     saveOnFirebaseRealtimeDatabase();
   }

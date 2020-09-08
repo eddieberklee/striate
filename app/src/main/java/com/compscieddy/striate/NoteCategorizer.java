@@ -93,6 +93,7 @@ public class NoteCategorizer {
             .setNegativeButton("Cancel", (dialog, which) -> {
               // if no, then highlight back
               noteHolder.restoreHighlight(randomColor);
+              dialog.dismiss();
             });
 
         AlertDialog removeHashtagDialog = removeHashtagConfirmationDialogBuilder.create();
@@ -108,7 +109,6 @@ public class NoteCategorizer {
         // clear current highlight (ui-only)
         noteHolder.cancelHighlight();
       } else {
-
         noteHolder.highlight(mRandomColor);
         if (!mHighlightedNoteHolders.contains(noteHolder)) {
           VibrationEtil.vibrate(noteView);
