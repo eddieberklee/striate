@@ -250,4 +250,13 @@ public class Note {
           }
         });
   }
+
+  @Exclude
+  public void removeHashtagAsLabel() {
+    setHashtagColor(-1);
+    setHashtagId(null);
+    setHashtagName(null);
+
+    saveOnFirebaseRealtimeDatabase();
+  }
 }

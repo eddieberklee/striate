@@ -1,10 +1,12 @@
 package com.compscieddy.striate;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.compscieddy.eddie_utils.etil.DialogEtil;
 import com.compscieddy.eddie_utils.etil.VibrationEtil;
 import com.compscieddy.striate.databinding.InfinoteGodFragmentBinding;
 import com.compscieddy.striate.model.Note;
@@ -60,7 +62,7 @@ public class NoteCategorizer {
       }
 
       if (isActionMove(event)) {
-        handleActionMove(noteView, noteHolder);
+        handleActionMove(noteView, noteHolder, mRandomColor);
       } else if (isActionUp(event)) { // UP
         handleActionUp();
         return false;
@@ -73,15 +75,52 @@ public class NoteCategorizer {
       return true;
     }
 
-    private void handleActionMove(View noteView, NoteHolder noteHolder) {
-      noteHolder.highlight(mRandomColor);
-      if (!mHighlightedNoteHolders.contains(noteHolder)) {
-        VibrationEtil.vibrate(noteView);
-        // todo: this contains might not work perfectly, may need to double-check based on note id
-        mHighlightedNoteHolders.add(noteHolder);
+    private void handleActionMove(View noteView, NoteHolder noteHolder, int randomColor) {
+      if (noteHolder.isPartOfExistingHashtagSection()) {
+        // show confirmation dialog
+        AlertDialog.Builder removeHashtagConfirmationDialogBuilder =
+            DialogEtil.getCustomDialogBuilder(
+                c,
+                res.getString(R.string.remove_hashtag_from_note_title),
+                noteHolder.getNote().getHashtagName());
+        removeHashtagConfirmationDialogBuilder
+            .setPositiveButton("Remove", (dialog, which) -> {
+              // if yes, delete on firebase realtime database
+              noteHolder.getNote().removeHashtagAsLabel();
+              cancelHighlightingAndClear();
+              dialog.dismiss();
+            })
+            .setNegativeButton("Cancel", (dialog, which) -> {
+              // if no, then highlight back
+              noteHolder.restoreHighlight(randomColor);
+            });
+
+        AlertDialog removeHashtagDialog = removeHashtagConfirmationDialogBuilder.create();
+        removeHashtagDialog.show();
+
+        removeHashtagDialog
+            .getButton(AlertDialog.BUTTON_POSITIVE)
+            .setTextColor(res.getColor(R.color.confirm_remove_hashtag_red));
+        removeHashtagDialog
+            .getButton(AlertDialog.BUTTON_NEGATIVE)
+            .setTextColor(res.getColor(R.color.black_t20));
+
+        // clear current highlight (ui-only)
+        noteHolder.cancelHighlight();
+      } else {
+
+        noteHolder.highlight(mRandomColor);
+        if (!mHighlightedNoteHolders.contains(noteHolder)) {
+          VibrationEtil.vibrate(noteView);
+          // todo: this contains might not work perfectly, may need to double-check based on note id
+          mHighlightedNoteHolders.add(noteHolder);
+        }
       }
     }
 
+    /**
+     * Tells NoteHolder to set highlighted notes and save to realtime database.
+     */
     private void handleActionUp() {
       for (NoteHolder holder : mHighlightedNoteHolders) {
         holder.setHighlight();

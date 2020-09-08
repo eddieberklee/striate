@@ -135,5 +135,6 @@
   <string name="num_photos_found_for_hashtag">%d photos found</string>
   <string name="entry_type_photo">photo</string>
   <string name="entry_type_text">text</string>
+  <string name="remove_hashtag_from_note_title">Remove the Label?</string>
 
 </resources>

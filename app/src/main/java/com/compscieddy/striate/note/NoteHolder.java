@@ -275,4 +275,12 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   public List<Hashtag> getExistingHashtags() {
     return mExistingHashtags;
   }
+
+  public boolean isPartOfExistingHashtagSection() {
+    return !TextUtils.isEmpty(mNote.getHashtagId());
+  }
+
+  public void restoreHighlight(int color) {
+    highlight(color);
+  }
 }

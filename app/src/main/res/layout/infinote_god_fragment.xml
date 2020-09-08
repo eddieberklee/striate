@@ -23,11 +23,12 @@
     android:id="@+id/new_note_autocomplete"
     style="@style/NoteAutoComplete"
     android:layout_gravity="bottom"
-    android:layout_marginBottom="80dp"
     android:background="?attr/bgPrimary"
     android:hint="What's on your mind?"
     android:paddingLeft="14dp"
+    android:paddingTop="16dp"
     android:paddingRight="14dp"
+    android:paddingBottom="76dp"
     android:textColorHint="?attr/fgPrimaryT40"
     />
 

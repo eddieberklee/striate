@@ -115,4 +115,8 @@
   <color name="wtb_90">#1A1A1A</color>
   <color name="wtb_95">#0D0D0D</color>
 
+  <!-- Custom Colors -->
+
+  <color name="confirm_remove_hashtag_red">#FF7575</color>
+
 </resources>
