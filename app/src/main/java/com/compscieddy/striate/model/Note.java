@@ -13,8 +13,10 @@ import com.google.firebase.database.Query;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import timber.log.Timber;
@@ -34,7 +36,11 @@ public class Note {
   private String mUserEmail;
   private long mCreatedAtMillis;
   private String mNoteText;
+
   private String mHashtagId;
+  private String mHashtagName;
+  private @ColorInt int mHashtagColor;
+  private List<Note> mHashtagSectionNotes;
 
   public Note() {
     // for firebase
@@ -71,15 +77,18 @@ public class Note {
   }
 
   @Exclude
+  public long getPriority() {
+    // need to set a negative timestamp for ordering in reverse chronological
+    return 0 - getCreatedAtMillis();
+  }
+
+  @Exclude
   public void saveNewEntryOnFirebaseRealtimeDatabase(@Nullable final Runnable onSuccessRunnable) {
     DatabaseReference newNoteRef = getNoteReference().push();
     setId(newNoteRef.getKey());
 
-    // need to set a negative timestamp for ordering in reverse chronological
-    long priority = 0 - getCreatedAtMillis();
-
     newNoteRef
-        .setValue(Note.this, priority)
+        .setValue(Note.this, getPriority())
         .addOnSuccessListener(new OnSuccessListener<Void>() {
           @Override
           public void onSuccess(Void aVoid) {
@@ -206,5 +215,39 @@ public class Note {
 
   public void setHashtagId(String hashtagId) {
     mHashtagId = hashtagId;
+  }
+
+  public String getHashtagName() {
+    return mHashtagName;
+  }
+
+  public void setHashtagName(String hashtagName) {
+    mHashtagName = hashtagName;
+  }
+
+  public int getHashtagColor() {
+    return mHashtagColor;
+  }
+
+  public void setHashtagColor(int hashtagColor) {
+    mHashtagColor = hashtagColor;
+  }
+
+  public void saveOnFirebaseRealtimeDatabase() {
+    getNoteReference()
+        .child(getId())
+        .setValue(Note.this, getPriority())
+        .addOnSuccessListener(new OnSuccessListener<Void>() {
+          @Override
+          public void onSuccess(Void aVoid) {
+            Timber.d("Successfully saved note with text: %s", getNoteText());
+          }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+          @Override
+          public void onFailure(@NonNull Exception e) {
+            CrashUtil.log("Failed to save entry with id: " + getId());
+          }
+        });
   }
 }

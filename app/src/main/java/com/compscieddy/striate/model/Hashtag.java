@@ -18,16 +18,29 @@ import timber.log.Timber;
 
 public class Hashtag {
 
+  @Exclude
+  public void saveOnFirebaseRealtimeDatabase() {
+    getHashtagReference()
+        .child(getId())
+        .setValue(Hashtag.this);
+  }
+
   public interface HashtagCallback {
     public void onHashtag(Hashtag hashtag);
   }
 
   private String mId;
   private long mCreatedAtMillis;
-  private String mHashtagText;
+  private String mHashtagName;
 
   public Hashtag() {
     // leaving empty for firebase
+  }
+
+  public Hashtag(String hashtagName) {
+    mId = getHashtagReference().push().getKey();
+    mHashtagName = hashtagName;
+    mCreatedAtMillis = System.currentTimeMillis();
   }
 
   @Exclude
@@ -52,21 +65,20 @@ public class Hashtag {
 
   @Exclude
   public static void getHashtag(String hashtagId, HashtagCallback hashtagCallback) {
-    ValueEventListener hashtagEventListener = new ValueEventListener() {
-      @Override
-      public void onDataChange(@NonNull DataSnapshot snapshot) {
-        Hashtag hashtag = snapshot.getValue(Hashtag.class);
-        hashtagCallback.onHashtag(hashtag);
-      }
-
-      @Override
-      public void onCancelled(@NonNull DatabaseError error) {
-        Timber.e("Hashtag was cancelled: %s", error.toString());
-      }
-    };
     getHashtagReference()
         .child(hashtagId)
-        .addValueEventListener(hashtagEventListener);
+        .addValueEventListener(new ValueEventListener() {
+          @Override
+          public void onDataChange(@NonNull DataSnapshot snapshot) {
+            Hashtag hashtag = snapshot.getValue(Hashtag.class);
+            hashtagCallback.onHashtag(hashtag);
+          }
+
+          @Override
+          public void onCancelled(@NonNull DatabaseError error) {
+            Timber.e("Hashtag was cancelled: %s", error.toString());
+          }
+        });
   }
 
   @Exclude
@@ -122,11 +134,11 @@ public class Hashtag {
     mCreatedAtMillis = createdAtMillis;
   }
 
-  public String getHashtagText() {
-    return mHashtagText;
+  public String getHashtagName() {
+    return mHashtagName;
   }
 
-  public void setHashtagText(String hashtagText) {
-    mHashtagText = hashtagText;
+  public void setHashtagName(String hashtagName) {
+    mHashtagName = hashtagName;
   }
 }
