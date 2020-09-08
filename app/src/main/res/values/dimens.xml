@@ -45,5 +45,6 @@
 
   <dimen name="entry_corner_radius">7dp</dimen>
   <dimen name="entry_spacing">1dp</dimen>
+  <dimen name="expanded_hashtag_title_height">20dp</dimen>
 
 </resources>

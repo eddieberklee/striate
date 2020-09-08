@@ -14,6 +14,7 @@ import com.compscieddy.eddie_utils.etil.Etil;
 import com.compscieddy.eddie_utils.etil.KeyboardEtil;
 import com.compscieddy.eddie_utils.etil.VibrationEtil;
 import com.compscieddy.eddie_utils.etil.ViewEtil;
+import com.compscieddy.striate.R;
 import com.compscieddy.striate.databinding.NoteItemBinding;
 import com.compscieddy.striate.model.Hashtag;
 import com.compscieddy.striate.model.HashtagDragSection;
@@ -42,15 +43,6 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     c = binding.getRoot().getContext();
     this.binding = binding;
     res = c.getResources();
-  }
-
-  public void setNote(Note note) {
-    mNote = note;
-
-    initNoteAutoComplete();
-    maybeFetchHashtag();
-
-    binding.noteTextAutocomplete.setText(note.getNoteText());
   }
 
   private void initNoteAutoComplete() {
@@ -124,7 +116,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.hashtagText.setSelection(mHashtag.getHashtagName().length());
     initHashtagTextColor(mNote.getHashtagColor());
 
-    initHashtagLine(mNote.getHashtagColor());
+    initHashtagLineAndHideDot(mNote.getHashtagColor());
 
     ViewGroup.LayoutParams hashtagParams = binding.hashtagText.getLayoutParams();
     hashtagParams.height = 0;
@@ -138,9 +130,11 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.hashtagText.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
   }
 
-  private void initHashtagLine(int color) {
+  private void initHashtagLineAndHideDot(int color) {
     binding.lineIndicator.setVisibility(View.VISIBLE);
     binding.lineIndicator.setBackgroundColor(color);
+
+    binding.dotControl.setVisibility(View.GONE);
   }
 
   private void expandHashtagView() {
@@ -148,13 +142,16 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.hashtagText.setVisibility(View.VISIBLE);
     binding.hashtagText.getLayoutParams().height = 0;
 
-    ViewEtil.animateViewHeight(binding.hashtagText, Etil.dpToPx(20), 600);
+    ViewEtil.animateViewHeight(
+        binding.hashtagText,
+        res.getDimensionPixelSize(R.dimen.expanded_hashtag_title_height),
+        600);
   }
 
   public void highlight(int color) {
     binding.dotControl.setVisibility(View.GONE);
 
-    initHashtagLine(color);
+    initHashtagLineAndHideDot(color);
 
     indentViews();
   }
@@ -190,6 +187,15 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
   public Note getNote() {
     return mNote;
+  }
+
+  public void setNote(Note note) {
+    mNote = note;
+
+    initNoteAutoComplete();
+    maybeFetchHashtag();
+
+    binding.noteTextAutocomplete.setText(note.getNoteText());
   }
 
   /**
@@ -247,7 +253,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     });
   }
 
-  private @Nullable Hashtag findHashtagWithText(String newHashtagText) {
+  private @Nullable
+  Hashtag findHashtagWithText(String newHashtagText) {
     // optimization: create a hashmap instead <HashtagText -> Hashtag>
     for (Hashtag hashtag : mExistingHashtags) {
       if (TextUtils.equals(hashtag.getHashtagName(), newHashtagText)) {
