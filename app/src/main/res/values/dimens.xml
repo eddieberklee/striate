@@ -47,5 +47,6 @@
   <dimen name="entry_spacing">1dp</dimen>
   <dimen name="expanded_hashtag_title_height">30dp</dimen>
   <dimen name="line_indicator_width">2dp</dimen>
+  <dimen name="hashtag_right_arrow_button">18dp</dimen>
 
 </resources>

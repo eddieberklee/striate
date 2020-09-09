@@ -29,6 +29,8 @@ import javax.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import timber.log.Timber;
 
+import static android.view.View.GONE;
+
 public class NoteHolder extends RecyclerView.ViewHolder {
 
   private final Context c;
@@ -101,9 +103,9 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
   private void initNoHashtag() {
     binding.hashtagNameAutocompleteView.setText("");
-    binding.hashtagNameAutocompleteView.setVisibility(View.GONE);
+    binding.hashtagNameAutocompleteView.setVisibility(GONE);
 
-    binding.lineIndicator.setVisibility(View.GONE);
+    binding.lineIndicator.setVisibility(GONE);
     binding.dotControl.setVisibility(View.VISIBLE);
 
     initDot();
@@ -151,7 +153,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.lineIndicator.setVisibility(View.VISIBLE);
     binding.lineIndicator.setBackgroundColor(color);
 
-    binding.dotControl.setVisibility(View.GONE);
+    binding.dotControl.setVisibility(GONE);
   }
 
   private void expandHashtagView() {
@@ -166,7 +168,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   public void highlight(int color) {
-    binding.dotControl.setVisibility(View.GONE);
+    binding.dotControl.setVisibility(GONE);
 
     initHashtagLineAndHideDot(color);
 
@@ -194,7 +196,7 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   private void hideHashtagLineIndicatorShowDot() {
-    binding.lineIndicator.setVisibility(View.GONE);
+    binding.lineIndicator.setVisibility(GONE);
     binding.dotControl.setVisibility(View.VISIBLE);
   }
 
@@ -211,6 +213,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     mExistingHashtagsCallback = hashtagCallback;
 
     initNoteAutoComplete();
+    binding.hashtagNameAutocompleteView.setVisibility(GONE);
+    binding.hashtagRightArrowButton.setVisibility(GONE);
     maybeFetchHashtag();
     initHashtag();
 
@@ -230,6 +234,9 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     } else {
       binding.hashtagNameAutocompleteView.setText(mNote.getHashtagName());
     }
+
+    binding.hashtagRightArrowButton.setVisibility(View.VISIBLE);
+    binding.hashtagRightArrowButton.setCustomColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
 
     initHashtagNameAutocompleteTextView(noteIds, hashtagColor);
     initHashtagAutocompleteAdapter(noteIds, hashtagColor);
