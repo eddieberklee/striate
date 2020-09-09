@@ -24,9 +24,8 @@ import timber.log.Timber;
 public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implements Filterable {
 
   private final Object mLock = new Object();
-  private final List<String> mOriginalExistingHashtagNames;
+  private List<String> mOriginalExistingHashtagNames;
   private ArrayFilter mFilter;
-  private ArrayList<String> mOriginalValues;
   private List<String> mExistingHashtagNames;
   private List<Integer> mOriginalExistingHashtagColors;
   private int mRandomNewHashtagColor;
@@ -44,16 +43,16 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
       mPrefix = prefix;
       final FilterResults results = new FilterResults();
 
-      if (mOriginalValues == null) {
+      if (mOriginalExistingHashtagNames == null) {
         synchronized (mLock) {
-          mOriginalValues = new ArrayList<>(mExistingHashtagNames);
+          mOriginalExistingHashtagNames = new ArrayList<>(mExistingHashtagNames);
         }
       }
 
       if (prefix == null || prefix.length() == 0) {
         final ArrayList<String> list;
         synchronized (mLock) {
-          list = new ArrayList<>(mOriginalValues);
+          list = new ArrayList<>(mOriginalExistingHashtagNames);
         }
         results.values = list;
         results.count = list.size();
@@ -62,7 +61,7 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
 
         final ArrayList<String> values;
         synchronized (mLock) {
-          values = new ArrayList<>(mOriginalValues);
+          values = new ArrayList<>(mOriginalExistingHashtagNames);
         }
 
         final int count = values.size();
