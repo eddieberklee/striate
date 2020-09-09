@@ -178,7 +178,7 @@ public class Note {
 
   @Exclude
   public void deleteOnFirebase() {
-    removeFromHashtagSection();
+    removeNoteFromHashtagSection();
 
     // todo: removing hashtag if this note is the last note of that hashtag
 
@@ -252,10 +252,8 @@ public class Note {
    * Queries other notes in hashtag section to delete this note's id from them.
    */
   @Exclude
-  public void removeFromHashtagSection() {
-    setHashtagColor(-1);
-    setHashtagId(null);
-    setHashtagName(null);
+  public void removeNoteFromHashtagSection() {
+    unsetHashtagInfoExceptHashtagNotes();
 
     List<String> hashtagNoteIds = getHashtagSectionNoteIds();
     if (hashtagNoteIds != null) {
@@ -263,6 +261,19 @@ public class Note {
     }
 
     saveOnFirebaseRealtimeDatabase();
+  }
+
+  @Exclude
+  public void unsetHashtagInfoExceptHashtagNotes() {
+    setHashtagColor(-1);
+    setHashtagId(null);
+    setHashtagName(null);
+  }
+
+  @Exclude
+  public void unsetHashtagInfo() {
+    unsetHashtagInfoExceptHashtagNotes();
+    setHashtagSectionNoteIds(null);
   }
 
   /**

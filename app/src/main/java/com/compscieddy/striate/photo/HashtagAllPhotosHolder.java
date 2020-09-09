@@ -31,7 +31,7 @@ public class HashtagAllPhotosHolder extends RecyclerView.ViewHolder {
 
   public void setHashtagName(String hashtagName) {
     mHashtagName = hashtagName;
-    binding.hashtagName.setText(mHashtagName);
+    binding.hashtagNameAutocompleteView.setText(mHashtagName);
     queryHashtagSpecificPhotos();
   }
 

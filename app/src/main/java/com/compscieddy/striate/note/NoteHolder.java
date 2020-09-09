@@ -100,8 +100,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   private void initNoHashtag() {
-    binding.hashtagName.setText("");
-    binding.hashtagName.setVisibility(View.GONE);
+    binding.hashtagNameAutocompleteView.setText("");
+    binding.hashtagNameAutocompleteView.setVisibility(View.GONE);
 
     binding.lineIndicator.setVisibility(View.GONE);
     binding.dotControl.setVisibility(View.VISIBLE);
@@ -143,8 +143,8 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   private void initHashtagTextColor(int hashtagColor) {
-    binding.hashtagName.setTextColor(hashtagColor);
-    binding.hashtagName.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
+    binding.hashtagNameAutocompleteView.setTextColor(hashtagColor);
+    binding.hashtagNameAutocompleteView.setHintTextColor(ColorEtil.applyAlpha(hashtagColor, 0.6f));
   }
 
   private void initHashtagLineAndHideDot(int color) {
@@ -156,11 +156,11 @@ public class NoteHolder extends RecyclerView.ViewHolder {
 
   private void expandHashtagView() {
     // todo: don't hardcode the height to grow to
-    binding.hashtagName.setVisibility(View.VISIBLE);
-    binding.hashtagName.getLayoutParams().height = 0;
+    binding.hashtagNameAutocompleteView.setVisibility(View.VISIBLE);
+    binding.hashtagNameAutocompleteView.getLayoutParams().height = 0;
 
     ViewEtil.animateViewHeight(
-        binding.hashtagName,
+        binding.hashtagNameAutocompleteView,
         res.getDimensionPixelSize(R.dimen.expanded_hashtag_title_height),
         100);
   }
@@ -223,52 +223,86 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   public void initHashtagName(List<String> noteIds, int hashtagColor) {
     expandHashtagView();
 
-    if (!TextUtils.isEmpty(mNote.getHashtagName()))
-      binding.hashtagName.setText(mNote.getHashtagName());
-    initHashtagNameAutocomplete(noteIds, hashtagColor);
+    if (TextUtils.isEmpty(mNote.getHashtagName())) {
+      // hashtag is being shown for new hashtag section, put focus on it
+      binding.hashtagNameAutocompleteView.requestFocus();
+      KeyboardEtil.showKeyboard(c);
+    } else {
+      binding.hashtagNameAutocompleteView.setText(mNote.getHashtagName());
+    }
 
-    binding.hashtagName.requestFocus();
-    KeyboardEtil.showKeyboard(c);
+    initHashtagNameAutocompleteTextView(noteIds, hashtagColor);
+    binding.hashtagNameAutocompleteView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+      @Override
+      public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+          // todo: hack to get the newest existing hashtags
+          initHashtagAutocompleteAdapter(noteIds, hashtagColor);
+        }
+      }
+    });
+  }
 
-    binding.hashtagName.setAdapter(
+  private void initHashtagAutocompleteAdapter(List<String> noteIds, int hashtagColor) {
+    binding.hashtagNameAutocompleteView.setAdapter(
         new HashtagAutocompleteArrayAdapter(
             c,
             R.layout.simple_thin_dropdown,
             getUniqueHashtagNamesFromHashtagList(mExistingHashtagsCallback.getExistingHashtags()),
             hashtagColor));
+    binding.hashtagNameAutocompleteView.setOnItemClickListener((parent, view, position, id) -> {
+      onHashtagActionDonePressed(noteIds, hashtagColor);
+    });
   }
 
-  private void initHashtagNameAutocomplete(final List<String> noteIds, int hashtagColor) {
+  private void initHashtagNameAutocompleteTextView(final List<String> noteIds, int hashtagColor) {
     initHashtagTextColor(hashtagColor);
 
-    binding.hashtagName.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+    binding.hashtagNameAutocompleteView.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
         | InputType.TYPE_CLASS_TEXT
         | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
         | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE);
-    binding.hashtagName.setImeOptions(EditorInfo.IME_ACTION_DONE);
-    binding.hashtagName.setOnEditorActionListener((v, actionId, event) -> {
+    binding.hashtagNameAutocompleteView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+    binding.hashtagNameAutocompleteView.setOnEditorActionListener((v, actionId, event) -> {
       if (actionId == EditorInfo.IME_ACTION_DONE) {
-        VibrationEtil.vibrate(binding.hashtagName);
-        for (String noteId : noteIds) {
-          updateNoteWithHashtagInfo(noteId, hashtagColor, noteIds);
+        if (TextUtils.isEmpty(binding.hashtagNameAutocompleteView.getText())) {
+          removeHashtagSectionFromAllNotes(noteIds);
+        } else {
+          onHashtagActionDonePressed(noteIds, hashtagColor);
         }
-        clearFocusAndHideKeyboard();
         return true;
       }
       return false;
     });
   }
 
+  private void removeHashtagSectionFromAllNotes(List<String> noteIds) {
+    for (String noteId : noteIds) {
+      Note.fetchNote(noteId, note -> {
+        note.unsetHashtagInfo();
+        note.saveOnFirebaseRealtimeDatabase();
+      });
+    }
+  }
+
+  private void onHashtagActionDonePressed(List<String> noteIds, int hashtagColor) {
+    VibrationEtil.vibrate(binding.hashtagNameAutocompleteView);
+    for (String noteId : noteIds) {
+      updateNoteWithHashtagInfo(noteId, hashtagColor, noteIds);
+    }
+    clearFocusAndHideKeyboard();
+  }
+
   private void clearFocusAndHideKeyboard() {
-    binding.hashtagName.clearFocus();
-    KeyboardEtil.hideKeyboard(binding.hashtagName);
+    binding.hashtagNameAutocompleteView.clearFocus();
+    KeyboardEtil.hideKeyboard(binding.hashtagNameAutocompleteView);
   }
 
   private void updateNoteWithHashtagInfo(
       String noteId,
       int hashtagColor,
       List<String> noteIds) {
-    String newHashtagText = binding.hashtagName.getText().toString();
+    String newHashtagText = binding.hashtagNameAutocompleteView.getText().toString();
     String hashtagId = getExistingOrCreateNewHashtag(newHashtagText);
 
     Note.fetchNote(noteId, note -> {

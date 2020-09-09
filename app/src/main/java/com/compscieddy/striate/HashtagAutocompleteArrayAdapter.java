@@ -145,7 +145,7 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
     int spanStart = text.toString().toLowerCase().indexOf(mPrefix.toString().toLowerCase());
     Timber.d("text %s prefix %s", text.toString().toLowerCase(), mPrefix.toString().toLowerCase());
     int spanEnd = spanStart + mPrefix.length();
-    if (spanStart >= 0 && spanEnd <= highlighted.length() - 1) {
+    if (spanStart >= 0 && spanEnd <= highlighted.length()) {
       highlighted.setSpan(highlightSpan, spanStart, spanEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 

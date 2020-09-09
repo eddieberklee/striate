@@ -94,7 +94,7 @@ public class NoteCategorizer {
         removeHashtagConfirmationDialogBuilder
             .setPositiveButton("Remove", (dialog, which) -> {
               // if yes, delete on firebase realtime database
-              noteHolder.getNote().removeFromHashtagSection();
+              noteHolder.getNote().removeNoteFromHashtagSection();
               cancelHighlightingAndClear();
               dialog.dismiss();
             })
