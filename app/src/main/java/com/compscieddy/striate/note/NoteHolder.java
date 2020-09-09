@@ -240,12 +240,23 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     mExistingHashtagsCallback = hashtagCallback;
 
     initNoteAutoComplete();
+    initNoteListeners();
     binding.hashtagNameAutocompleteView.setVisibility(GONE);
     binding.hashtagRightArrowButton.setVisibility(GONE);
     maybeFetchHashtag();
     initHashtag();
 
     binding.noteTextAutocomplete.setText(note.getNoteText());
+  }
+
+  private void initNoteListeners() {
+    binding.noteTextAutocomplete.setOnFocusChangeListener((v, hasFocus) -> {
+      if (!hasFocus) {
+        mNote.saveFieldOnFirebaseRealtimeDatabase(
+            Note.FIELD_NOTE_TEXT,
+            binding.noteTextAutocomplete.getText().toString());
+      }
+    });
   }
 
   /**
