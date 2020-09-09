@@ -6,13 +6,13 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 
 import com.compscieddy.eddie_utils.etil.ColorEtil;
 import com.compscieddy.eddie_utils.etil.Etil;
 import com.compscieddy.eddie_utils.etil.KeyboardEtil;
 import com.compscieddy.eddie_utils.etil.VibrationEtil;
 import com.compscieddy.eddie_utils.etil.ViewEtil;
+import com.compscieddy.striate.HashtagAutocompleteArrayAdapter;
 import com.compscieddy.striate.R;
 import com.compscieddy.striate.databinding.NoteItemBinding;
 import com.compscieddy.striate.god.InfinoteGodFragment;
@@ -230,10 +230,12 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     binding.hashtagName.requestFocus();
     KeyboardEtil.showKeyboard(c);
 
-    binding.hashtagName.setAdapter(new ArrayAdapter<>(
-        c,
-        R.layout.simple_thin_dropdown,
-        getUniqueHashtagNamesFromHashtagList(mExistingHashtagsCallback.getExistingHashtags())));
+    binding.hashtagName.setAdapter(
+        new HashtagAutocompleteArrayAdapter(
+            c,
+            R.layout.simple_thin_dropdown,
+            getUniqueHashtagNamesFromHashtagList(mExistingHashtagsCallback.getExistingHashtags()),
+            hashtagColor));
   }
 
   private void initHashtagNameAutocomplete(final List<String> noteIds, int hashtagColor) {
