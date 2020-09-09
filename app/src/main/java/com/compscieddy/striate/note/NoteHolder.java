@@ -232,14 +232,10 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     }
 
     initHashtagNameAutocompleteTextView(noteIds, hashtagColor);
-    binding.hashtagNameAutocompleteView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-      @Override
-      public void onFocusChange(View v, boolean hasFocus) {
-        if (hasFocus) {
-          // todo: hack to get the newest existing hashtags
-          initHashtagAutocompleteAdapter(noteIds, hashtagColor);
-        }
-      }
+    initHashtagAutocompleteAdapter(noteIds, hashtagColor);
+    binding.hashtagNameAutocompleteView.setOnFocusChangeListener((v, hasFocus) -> {
+      // todo: hack to ensure we are always updating based on new hashtags we create
+      initHashtagAutocompleteAdapter(noteIds, hashtagColor);
     });
   }
 
