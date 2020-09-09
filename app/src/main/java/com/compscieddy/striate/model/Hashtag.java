@@ -18,20 +18,19 @@ import timber.log.Timber;
 
 public class Hashtag {
 
-  @Exclude
-  public void saveOnFirebaseRealtimeDatabase() {
-    getHashtagReference()
-        .child(getId())
-        .setValue(Hashtag.this);
-  }
-
   public interface HashtagCallback {
     public void onHashtag(Hashtag hashtag);
   }
 
+  private static final String FIELD_ID = "id";
+  private static final String FIELD_CREATED_AT_MILLIS = "createdAtMillis";
+  private static final String FIELD_HASHTAG_NAME = "hashtagName";
+  private static final String FIELD_HASHTAG_COLOR = "hashtagColor";
+
   private String mId;
   private long mCreatedAtMillis;
   private String mHashtagName;
+  private int mHashtagColor = -1;
 
   public Hashtag() {
     // leaving empty for firebase
@@ -79,6 +78,13 @@ public class Hashtag {
             Timber.e("Hashtag was cancelled: %s", error.toString());
           }
         });
+  }
+
+  @Exclude
+  public void saveOnFirebaseRealtimeDatabase() {
+    getHashtagReference()
+        .child(getId())
+        .setValue(Hashtag.this);
   }
 
   @Exclude
@@ -140,5 +146,13 @@ public class Hashtag {
 
   public void setHashtagName(String hashtagName) {
     mHashtagName = hashtagName;
+  }
+
+  public int getHashtagColor() {
+    return mHashtagColor;
+  }
+
+  public void setHashtagColor(int hashtagColor) {
+    mHashtagColor = hashtagColor;
   }
 }

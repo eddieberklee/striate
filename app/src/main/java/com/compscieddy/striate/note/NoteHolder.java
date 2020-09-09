@@ -306,26 +306,31 @@ public class NoteHolder extends RecyclerView.ViewHolder {
       int hashtagColor,
       List<String> noteIds) {
     String newHashtagText = binding.hashtagNameAutocompleteView.getText().toString();
-    String hashtagId = getExistingOrCreateNewHashtag(newHashtagText);
+
+    Hashtag existingOrNewHashtag = getExistingOrCreateNewHashtag(newHashtagText, hashtagColor);
+    boolean hasExistingHashtagColor = existingOrNewHashtag.getHashtagColor() != -1;
 
     Note.fetchNote(noteId, note -> {
-      note.setHashtagId(hashtagId);
+      note.setHashtagId(existingOrNewHashtag.getId());
       note.setHashtagName(newHashtagText);
-      note.setHashtagColor(hashtagColor);
+      note.setHashtagColor(hasExistingHashtagColor
+          ? existingOrNewHashtag.getHashtagColor()
+          : hashtagColor);
       note.setHashtagSectionNoteIds(noteIds);
       note.saveOnFirebaseRealtimeDatabase();
     });
   }
 
-  private String getExistingOrCreateNewHashtag(String newHashtagText) {
+  private Hashtag getExistingOrCreateNewHashtag(String newHashtagText, int hashtagColor) {
     @Nullable Hashtag existingHashtag = findHashtagWithText(newHashtagText);
 
     if (existingHashtag != null) {
-      return existingHashtag.getId();
+      return existingHashtag;
     } else {
       Hashtag hashtag = new Hashtag(newHashtagText);
+      hashtag.setHashtagColor(hashtagColor);
       hashtag.saveOnFirebaseRealtimeDatabase();
-      return hashtag.getId();
+      return hashtag;
     }
   }
 
