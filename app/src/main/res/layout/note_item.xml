@@ -32,7 +32,7 @@
         android:completionThreshold="0"
         android:hint="Hashtag name..."
         android:paddingTop="3dp"
-        android:paddingRight="20dp"
+        android:paddingRight="40dp"
         android:textSize="16sp"
         app:fontface="jost_regular"
         />

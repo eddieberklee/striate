@@ -5,6 +5,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,10 +24,12 @@ import timber.log.Timber;
 public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implements Filterable {
 
   private final Object mLock = new Object();
+  private final List<String> mOriginalExistingHashtagNames;
   private ArrayFilter mFilter;
   private ArrayList<String> mOriginalValues;
-  private List<String> mObjects;
-  private int mHashtagColor;
+  private List<String> mExistingHashtagNames;
+  private List<Integer> mOriginalExistingHashtagColors;
+  private int mRandomNewHashtagColor;
   private CharSequence mPrefix;
 
   /**
@@ -43,7 +46,7 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
 
       if (mOriginalValues == null) {
         synchronized (mLock) {
-          mOriginalValues = new ArrayList<>(mObjects);
+          mOriginalValues = new ArrayList<>(mExistingHashtagNames);
         }
       }
 
@@ -93,7 +96,7 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
       //noinspection unchecked
-      mObjects = (List<String>) results.values;
+      mExistingHashtagNames = (List<String>) results.values;
       if (results.count > 0) {
         notifyDataSetChanged();
       } else {
@@ -105,11 +108,14 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
   public HashtagAutocompleteArrayAdapter(
       @NonNull Context context,
       int textViewResourceId,
-      @NonNull List<String> objects,
-      @ColorInt int hashtagColor) {
-    super(context, textViewResourceId, objects);
-    mHashtagColor = hashtagColor;
-    mObjects = objects;
+      @NonNull List<String> originalExistingHashtagNames,
+      @NonNull List<Integer> originalExistingHashtagColors,
+      @ColorInt int randomNewHashtagColor) {
+    super(context, textViewResourceId, originalExistingHashtagNames);
+    mOriginalExistingHashtagNames = originalExistingHashtagNames;
+    mExistingHashtagNames = new ArrayList<>(mOriginalExistingHashtagNames);
+    mOriginalExistingHashtagColors = originalExistingHashtagColors;
+    mRandomNewHashtagColor = randomNewHashtagColor;
   }
 
   @Override
@@ -123,24 +129,28 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
   @Nullable
   @Override
   public String getItem(int position) {
-    return mObjects.get(position);
+    return mExistingHashtagNames.get(position);
   }
 
   @Override
   public int getCount() {
-    return mObjects.size();
+    return mExistingHashtagNames.size();
   }
 
   @NonNull
   @Override
   public View getView(
       int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-    View view = super.getView(position, convertView, parent);
+    View view = LayoutInflater
+        .from(parent.getContext())
+        .inflate(R.layout.simple_thin_dropdown, parent, false);
     TextView textView = view.findViewById(android.R.id.text1);
-    CharSequence text = textView.getText();
+    View hashtagColorDot = view.findViewById(R.id.hashtag_dot_color);
+
+    CharSequence text = mExistingHashtagNames.get(position);
 
     Spannable highlighted = new SpannableString(text);
-    ForegroundColorSpan highlightSpan = new ForegroundColorSpan(mHashtagColor);
+    ForegroundColorSpan highlightSpan = new ForegroundColorSpan(mRandomNewHashtagColor);
 
     int spanStart = text.toString().toLowerCase().indexOf(mPrefix.toString().toLowerCase());
     Timber.d("text %s prefix %s", text.toString().toLowerCase(), mPrefix.toString().toLowerCase());
@@ -150,6 +160,11 @@ public class HashtagAutocompleteArrayAdapter extends ArrayAdapter<String> implem
     }
 
     textView.setText(highlighted);
+
+    int hashtagIndex = mOriginalExistingHashtagNames.indexOf(text);
+    if (hashtagIndex != -1 && mOriginalExistingHashtagColors.get(hashtagIndex) != -1) {
+      hashtagColorDot.setBackgroundColor(mOriginalExistingHashtagColors.get(hashtagIndex));
+    }
 
     return view;
   }

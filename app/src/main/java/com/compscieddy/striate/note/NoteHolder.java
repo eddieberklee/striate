@@ -59,6 +59,33 @@ public class NoteHolder extends RecyclerView.ViewHolder {
     return noteIds;
   }
 
+  private static List<Hashtag> getUniqueHashtags(List<Hashtag> hashtags) {
+    Set<Hashtag> uniqueHashtags = new HashSet<>();
+    for (Hashtag hashtag : hashtags) {
+      if (hashtag == null || TextUtils.isEmpty(hashtag.getHashtagName())) {
+        continue;
+      }
+      uniqueHashtags.add(hashtag);
+    }
+    return new ArrayList<>(uniqueHashtags);
+  }
+
+  private static List<Integer> getHashtagColors(List<Hashtag> hashtags) {
+    List<Integer> uniqueHashtagColors = new ArrayList<>();
+    for (Hashtag hashtag : hashtags) {
+      uniqueHashtagColors.add(hashtag.getHashtagColor());
+    }
+    return uniqueHashtagColors;
+  }
+
+  private static List<String> getHashtagNames(List<Hashtag> hashtags) {
+    List<String> uniqueHashtagNames = new ArrayList<>();
+    for (Hashtag hashtag : hashtags) {
+      uniqueHashtagNames.add(hashtag.getHashtagName());
+    }
+    return uniqueHashtagNames;
+  }
+
   private void initNoteAutoComplete() {
     binding.noteTextAutocomplete.setRawInputType(InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
         | InputType.TYPE_CLASS_TEXT
@@ -247,11 +274,14 @@ public class NoteHolder extends RecyclerView.ViewHolder {
   }
 
   private void initHashtagAutocompleteAdapter(List<String> noteIds, int hashtagColor) {
+    List<Hashtag> uniqueHashtags =
+        getUniqueHashtags(mExistingHashtagsCallback.getExistingHashtags());
     binding.hashtagNameAutocompleteView.setAdapter(
         new HashtagAutocompleteArrayAdapter(
             c,
             R.layout.simple_thin_dropdown,
-            getUniqueHashtagNamesFromHashtagList(mExistingHashtagsCallback.getExistingHashtags()),
+            getHashtagNames(uniqueHashtags),
+            getHashtagColors(uniqueHashtags),
             hashtagColor));
     binding.hashtagNameAutocompleteView.setOnItemClickListener((parent, view, position, id) -> {
       onHashtagActionDonePressed(noteIds, hashtagColor);
@@ -343,18 +373,6 @@ public class NoteHolder extends RecyclerView.ViewHolder {
       }
     }
     return null;
-  }
-
-  private List<String> getUniqueHashtagNamesFromHashtagList(List<Hashtag> existingHashtags) {
-    Set<String> hashtagNames = new HashSet<>();
-    for (Hashtag hashtag : existingHashtags) {
-      if (hashtag == null || TextUtils.isEmpty(hashtag.getHashtagName())) {
-        continue;
-      }
-      hashtagNames.add(hashtag.getHashtagName());
-    }
-
-    return new ArrayList<>(hashtagNames);
   }
 
   public boolean isPartOfExistingHashtagSection() {
